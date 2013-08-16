@@ -1,0 +1,6 @@
+QMAKE_TARGET  = nfc_pos_mobile
+PROJECT_DIR	  := $(dir $(word $(words $(MAKEFILE_LIST)),$(MAKEFILE_LIST)))
+I18N_DIR	  := $(PROJECT_DIR)/translations
+
+include mk/cs-base.mk
+
