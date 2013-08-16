@@ -209,7 +209,7 @@ private:
 	void handleEmulateNfcEvent(bps_event_t *event);
 	void handleEmulateEchoEvent(bps_event_t *event);
 	debitMachineMessageType debitMachineListener(nfc_target_t *target);
-	bool debitMachineResponder(int code, const char * text, int data);
+	bool debitMachineResponder(int code, QString text, int data);
 	void handlePaymentRequest(nfc_target_t *target);
 	void processIso144434EchoCommandEvent(nfc_target_t *target);
 	void parseNdefMessage(nfc_ndef_message_t *ndefMessage);

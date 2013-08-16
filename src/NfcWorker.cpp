@@ -2143,7 +2143,7 @@ void NfcWorker::displayTagInformation(nfc_target_t* target, bool display_ndef_de
 debitMachineMessageType NfcWorker::debitMachineListener(nfc_target_t *target){
 	debitMachineMessageType received_message;
 	received_message.transactionCode = IN_CODE_INVALID;
-	received_message.text = "";
+	received_message.text = " ";
 	received_message.data = 0;
 
 	unsigned char command[NFC_ISO14443_4_COMMAND_BUFFER_LENGTH];
@@ -2210,11 +2210,11 @@ debitMachineMessageType NfcWorker::debitMachineListener(nfc_target_t *target){
 
 	for(int i=0; i<strlen(messageChar); i++ ){
 		if (messageChar[i]=='!'){
-			count++;
 			if(count == 0) codeArray[destIndex]='\0';
 			else if (count == 1) textArray[destIndex]='\0';
 			else if (count == 2) dataArray[destIndex]='\0';
 			destIndex = 0;
+			count++;
 		}
 		else{
 			if (count == 0){
@@ -2242,16 +2242,19 @@ debitMachineMessageType NfcWorker::debitMachineListener(nfc_target_t *target){
 	return received_message;
 }
 
-bool NfcWorker::debitMachineResponder(int code, const char * text, int data){
+bool NfcWorker::debitMachineResponder(int code, QString text, int data){
     bool success = true;
 
 	char outgoing_message[NFC_ISO14443_4_COMMAND_BUFFER_LENGTH];
 	memset(outgoing_message, 0, NFC_ISO14443_4_COMMAND_BUFFER_LENGTH);
 
-	//format message for transfer and store in out buffer. '!' is used to separate the different message components
-	sprintf (outgoing_message, "%s!%s!%d", outgoing_table[code].message, text, data);
-	emit message(QString("Response1 : %1").arg(QString::fromUtf8(outgoing_message)));
+	//format message for transfer to mobile. '!' is used to separate the different message components
+	QString outString = QString("%1!%2!%3").arg(code).arg(text).arg(data);
+	const char* outChar = outString.toUtf8().constData();
+	memcpy(outgoing_message, outChar, strlen(outChar));
+	outgoing_message[strlen(outChar)] = '\0';
 
+	emit message(QString("Response1 : %1").arg(outString));
 	size_t response_length = strlen(outgoing_message) + 2;
 
 	unsigned char response [response_length];
@@ -2259,6 +2262,7 @@ bool NfcWorker::debitMachineResponder(int code, const char * text, int data){
 	for (i = 0; i < strlen(outgoing_message); i++) {
 		response[i] = outgoing_message[i];
 	}
+
 	response[i] = 0x90;
 	i++;
 	response[i] = 0x00;
@@ -2281,7 +2285,7 @@ void NfcWorker::handlePaymentRequest(nfc_target_t *target){
 	debitMachineMessageType message_received;
 	message_received = debitMachineListener(target);
 	int outCode = OUT_CODE_INVALID;
-	QString outText = "";
+	QString outText = " ";
 	int outData = 0;
 
 	switch (message_received.transactionCode){
@@ -2353,5 +2357,5 @@ void NfcWorker::handlePaymentRequest(nfc_target_t *target){
 	emit message(QString("Out Transaction Code : %1").arg(outCode));
 	emit message(QString("Out Text : %1").arg(outText));
 	emit message(QString("Out Data : %1").arg(outData));
-	debitMachineResponder(outCode, outText.toUtf8().constData(), outData);
+	debitMachineResponder(outCode, outText, outData);
 }
