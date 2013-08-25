@@ -1,69 +1,69 @@
 /* Copyright (c) 2012 Research In Motion Limited.
-*
-* Licensed under the Apache License, Version 2.0 (the "License");
-* you may not use this file except in compliance with the License.
-* You may obtain a copy of the License at
-*
-* http://www.apache.org/licenses/LICENSE-2.0
-*
-* Unless required by applicable law or agreed to in writing, software
-* distributed under the License is distributed on an "AS IS" BASIS,
-* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-* See the License for the specific language governing permissions and
-* limitations under the License.
-*/
-import bb.cascades 1.0
-import "common"
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 
-NavigationPane {
-    id: nav
-    objectName: "navPane"
-    
-    signal menuShowing()
-                
-    function updateData() {
-    }
-    
-    Page {
-        id: menuListPage
+import bb.cascades 1.2
+
+// The root node has to inherit from AbstractPane -- in this case a TabbedPane.
+// There is always only ONE root not in a QML file and it is typically
+// an AbstractPane object like Page.
+
+TabbedPane {
+    id: root
+
+    property bool databaseOpen: false
+
+    showTabsOnActionBar: true
+    //! [0]
+    Tab {
+        title: qsTr("Create")
+        imageSource: "asset:///images/create.png"
         
-        content: Container {
-            background: Color.create ("#262626")
-            preferredWidth: 720
-            layout: DockLayout {
-            }
-
-            // A Container for the list, padded at the top and bottom to make room for decorations.
-            Container {
-                layout: DockLayout {
-                }
-                topPadding: 2
-                bottomPadding: 2
-
-                ListView {
-                    id: menuList;
-                    objectName: "list"
-                    dataModel: XmlDataModel {
-                        source: "models/menumodel.xml"
-                    }
-                                        
-                    listItemComponents: [
-                        ListItemComponent {
-                            type: "menuitem" 
-                            MenuItem {
-                            }
-                        }
-                    ]
-                    
-                }
-            }
+        PageBase {
+            databaseOpen: root.databaseOpen
+            page: "CreatePage.qml"
         }
     }
-    onTopChanged: {
-        if (page == menuListPage) {
-            // Clear selection when returning to the menu list page.
-            menuList.clearSelection ();
-            nav.menuShowing();
+    
+    Tab {
+        title: qsTr("Retrieve")
+        imageSource: "asset:///images/retrieve.png"
+
+        PageBase {
+            databaseOpen: root.databaseOpen
+            page: "RetrievePage.qml"
         }
     }
+
+    Tab {
+        title: qsTr("Update")
+        imageSource: "asset:///images/update.png"
+
+        PageBase {
+            databaseOpen: root.databaseOpen
+            page: "UpdatePage.qml"
+        }
+    }
+
+    Tab {
+        title: qsTr("Delete")
+        imageSource: "asset:///images/delete.png"
+
+        PageBase {
+            databaseOpen: root.databaseOpen
+            page: "DeletePage.qml"
+        }
+    }
+    //! [0]
 }

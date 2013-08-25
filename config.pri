@@ -13,6 +13,7 @@ device {
                  $$quote($$BASEDIR/src/NdefType.cpp) \
                  $$quote($$BASEDIR/src/NfcManager.cpp) \
                  $$quote($$BASEDIR/src/NfcWorker.cpp) \
+                 $$quote($$BASEDIR/src/Person.cpp) \
                  $$quote($$BASEDIR/src/SendVcard.cpp) \
                  $$quote($$BASEDIR/src/Settings.cpp) \
                  $$quote($$BASEDIR/src/StateManager.cpp) \
@@ -24,8 +25,10 @@ device {
                  $$quote($$BASEDIR/src/alternatinglistdatamanager.cpp) \
                  $$quote($$BASEDIR/src/alternatinglistdatamodel.cpp) \
                  $$quote($$BASEDIR/src/alternatinglistitem.cpp) \
+                 $$quote($$BASEDIR/src/app.cpp) \
                  $$quote($$BASEDIR/src/applicationui.cpp) \
                  $$quote($$BASEDIR/src/main.cpp) \
+                 $$quote($$BASEDIR/src/main2.cpp) \
                  $$quote($$BASEDIR/src/mylistmodel.cpp)
 
         HEADERS +=  $$quote($$BASEDIR/src/About.hpp) \
@@ -38,6 +41,7 @@ device {
                  $$quote($$BASEDIR/src/NdefType.hpp) \
                  $$quote($$BASEDIR/src/NfcManager.hpp) \
                  $$quote($$BASEDIR/src/NfcWorker.hpp) \
+                 $$quote($$BASEDIR/src/Person.hpp) \
                  $$quote($$BASEDIR/src/SendVcard.hpp) \
                  $$quote($$BASEDIR/src/Settings.hpp) \
                  $$quote($$BASEDIR/src/StateManager.hpp) \
@@ -49,6 +53,7 @@ device {
                  $$quote($$BASEDIR/src/alternatinglistdatamanager.hpp) \
                  $$quote($$BASEDIR/src/alternatinglistdatamodel.hpp) \
                  $$quote($$BASEDIR/src/alternatinglistitem.hpp) \
+                 $$quote($$BASEDIR/src/app.hpp) \
                  $$quote($$BASEDIR/src/applicationui.hpp) \
                  $$quote($$BASEDIR/src/mylistmodel.hpp)
     }
@@ -64,6 +69,7 @@ device {
                  $$quote($$BASEDIR/src/NdefType.cpp) \
                  $$quote($$BASEDIR/src/NfcManager.cpp) \
                  $$quote($$BASEDIR/src/NfcWorker.cpp) \
+                 $$quote($$BASEDIR/src/Person.cpp) \
                  $$quote($$BASEDIR/src/SendVcard.cpp) \
                  $$quote($$BASEDIR/src/Settings.cpp) \
                  $$quote($$BASEDIR/src/StateManager.cpp) \
@@ -75,8 +81,10 @@ device {
                  $$quote($$BASEDIR/src/alternatinglistdatamanager.cpp) \
                  $$quote($$BASEDIR/src/alternatinglistdatamodel.cpp) \
                  $$quote($$BASEDIR/src/alternatinglistitem.cpp) \
+                 $$quote($$BASEDIR/src/app.cpp) \
                  $$quote($$BASEDIR/src/applicationui.cpp) \
                  $$quote($$BASEDIR/src/main.cpp) \
+                 $$quote($$BASEDIR/src/main2.cpp) \
                  $$quote($$BASEDIR/src/mylistmodel.cpp)
 
         HEADERS +=  $$quote($$BASEDIR/src/About.hpp) \
@@ -89,6 +97,7 @@ device {
                  $$quote($$BASEDIR/src/NdefType.hpp) \
                  $$quote($$BASEDIR/src/NfcManager.hpp) \
                  $$quote($$BASEDIR/src/NfcWorker.hpp) \
+                 $$quote($$BASEDIR/src/Person.hpp) \
                  $$quote($$BASEDIR/src/SendVcard.hpp) \
                  $$quote($$BASEDIR/src/Settings.hpp) \
                  $$quote($$BASEDIR/src/StateManager.hpp) \
@@ -100,6 +109,7 @@ device {
                  $$quote($$BASEDIR/src/alternatinglistdatamanager.hpp) \
                  $$quote($$BASEDIR/src/alternatinglistdatamodel.hpp) \
                  $$quote($$BASEDIR/src/alternatinglistitem.hpp) \
+                 $$quote($$BASEDIR/src/app.hpp) \
                  $$quote($$BASEDIR/src/applicationui.hpp) \
                  $$quote($$BASEDIR/src/mylistmodel.hpp)
     }
@@ -117,6 +127,7 @@ simulator {
                  $$quote($$BASEDIR/src/NdefType.cpp) \
                  $$quote($$BASEDIR/src/NfcManager.cpp) \
                  $$quote($$BASEDIR/src/NfcWorker.cpp) \
+                 $$quote($$BASEDIR/src/Person.cpp) \
                  $$quote($$BASEDIR/src/SendVcard.cpp) \
                  $$quote($$BASEDIR/src/Settings.cpp) \
                  $$quote($$BASEDIR/src/StateManager.cpp) \
@@ -128,8 +139,10 @@ simulator {
                  $$quote($$BASEDIR/src/alternatinglistdatamanager.cpp) \
                  $$quote($$BASEDIR/src/alternatinglistdatamodel.cpp) \
                  $$quote($$BASEDIR/src/alternatinglistitem.cpp) \
+                 $$quote($$BASEDIR/src/app.cpp) \
                  $$quote($$BASEDIR/src/applicationui.cpp) \
                  $$quote($$BASEDIR/src/main.cpp) \
+                 $$quote($$BASEDIR/src/main2.cpp) \
                  $$quote($$BASEDIR/src/mylistmodel.cpp)
 
         HEADERS +=  $$quote($$BASEDIR/src/About.hpp) \
@@ -142,6 +155,7 @@ simulator {
                  $$quote($$BASEDIR/src/NdefType.hpp) \
                  $$quote($$BASEDIR/src/NfcManager.hpp) \
                  $$quote($$BASEDIR/src/NfcWorker.hpp) \
+                 $$quote($$BASEDIR/src/Person.hpp) \
                  $$quote($$BASEDIR/src/SendVcard.hpp) \
                  $$quote($$BASEDIR/src/Settings.hpp) \
                  $$quote($$BASEDIR/src/StateManager.hpp) \
@@ -153,6 +167,7 @@ simulator {
                  $$quote($$BASEDIR/src/alternatinglistdatamanager.hpp) \
                  $$quote($$BASEDIR/src/alternatinglistdatamodel.hpp) \
                  $$quote($$BASEDIR/src/alternatinglistitem.hpp) \
+                 $$quote($$BASEDIR/src/app.hpp) \
                  $$quote($$BASEDIR/src/applicationui.hpp) \
                  $$quote($$BASEDIR/src/mylistmodel.hpp)
     }

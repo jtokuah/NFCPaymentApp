@@ -143,6 +143,7 @@ signals:
 	void event_log_needed();
 	void message(const QVariant &message);
 
+
 public slots:
 	void startEventLoop();
 	void initialize();
@@ -208,6 +209,7 @@ private:
 	void handleSendVcardEvent(bps_event_t *event);
 	void handleEmulateNfcEvent(bps_event_t *event);
 	void handleEmulateEchoEvent(bps_event_t *event);
+	void transactionStatus(const QString &message);
 	debitMachineMessageType debitMachineListener(nfc_target_t *target);
 	bool debitMachineResponder(int code, QString text, int data);
 	void handlePaymentRequest(nfc_target_t *target);

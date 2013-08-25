@@ -12,28 +12,33 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#include <bb/cascades/Application>
-#include <QtCore/QLocale>
-#include <QtCore/QTranslator>
-#include <Qt/qdeclarativedebug.h>
 
-#include "MainMenu.hpp"
+#include "app.hpp"
+
+#include <bb/cascades/Application>
 
 using ::bb::cascades::Application;
 
-Q_DECL_EXPORT int main(int argc, char **argv) {
-	Application app(argc, argv);
+// this allows us to write "Application"
+// instead of "bb::cascades::Application"
 
-	QTranslator translator;
-	QString locale_string = QLocale().name();
-	QString filename = QString("NfcPaymentApp_%1").arg(locale_string);
-	if (translator.load(filename, "app/native/qm")) {
-		app.installTranslator(&translator);
-	}
+// main() is the entry point of the application. It will be called by the
+// operating system when you start the application. You should never call this
+// yourself.
+Q_DECL_EXPORT int main(int argc, char **argv)
+{
+    // "Application" is the BB cascades class that handles interaction the
+    // with BB10 operating system.
+    Application app(argc, argv);
 
-	MainMenu mainApp(&app);
-	QObject::connect(&app, SIGNAL(aboutToQuit()), &mainApp,
-			SLOT(cleanUpOnExit()));
+    // Create an instance of App on the stack. App's
+    // constructor registers itself with Application object using setScene().
+    // See app.cpp
+    App mainApp;
 
-	return Application::exec();
+    // Start the application event loop (run-loop).
+    return Application::exec();
+
+    // When the loop is exited the Application deletes the scene which deletes
+    // all its children (per Qt rules for children)
 }
