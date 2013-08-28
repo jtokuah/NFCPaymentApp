@@ -15,10 +15,20 @@
 #ifndef APP_HPP
 #define APP_HPP
 
+#include <bb/cascades/QmlDocument>
+#include <bb/data/SqlConnection>
 #include <bb/cascades/GroupDataModel>
 #include "NfcManager.hpp"
 
+#include <QtCore>
+
 using namespace bb::cascades;
+
+extern QmlDocument *transactionQml;
+extern QmlDocument *rootQml;
+extern AbstractPane *transaction;
+extern AbstractPane *root;
+extern bool activeTransaction;
 
 /*
  * @brief Declaration of our application's class (as opposed to the BB Cascades
@@ -43,6 +53,7 @@ public:
     Q_INVOKABLE bool deleteRecord(const QString &key);
     Q_INVOKABLE bool authenticateUser(const QString &username, const QString &password);
     Q_INVOKABLE void handleTransaction();
+    Q_INVOKABLE void showMessage(const QString &text, int field);
 
 private:
     // Functions to call upon initialization to setup the model and database
@@ -60,5 +71,7 @@ private:
     // The data shown by the list view.
     GroupDataModel* m_dataModel;
 };
+
+extern App *appObject;
 
 #endif

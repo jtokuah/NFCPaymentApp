@@ -13,7 +13,7 @@ TabbedPane {
         
         PageBase {
             tabTitle: "Make NFC Payment"
-            buttonText1: "Start Transaction"
+            buttonText1: "Begin Transaction"
             page: "MakePayment.qml"
         }
     }

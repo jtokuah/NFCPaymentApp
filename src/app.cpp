@@ -13,41 +13,52 @@
  * limitations under the License.
  */
 #include "app.hpp"
-
 #include "Person.hpp"
 
 #include <bb/cascades/AbstractPane>
+#include <bb/cascades/AbstractTextControl>
+#include <bb/cascades/ActiveTextHandler>
 #include <bb/cascades/Application>
-#include <bb/cascades/QmlDocument>
-#include <bb/data/SqlConnection>
-#include <bb/data/SqlDataAccess>
 #include <bb/system/SystemDialog>
-#include <bb/system/SystemProgressToast>
+#include <bb/cascades/OrientationSupport>
+#include <bb/data/SqlDataAccess>
+#include <bb/data/SqlConnection>
 
 #include <QtSql/QtSql>
+
 #include <QDebug>
 #include "MainMenu.hpp"
+#include "NfcWorker.hpp"
 
 using namespace bb::cascades;
 using namespace bb::system;
 using namespace bb::data;
+
+QmlDocument *transactionQml;
+QmlDocument *rootQml;
+AbstractPane *transaction;
+AbstractPane *root;
+bool activeTransaction;
+App *appObject;
+
 //! [0]
 App::App()
     : m_dataModel(0),_nfcManager(0)
 {
+	appObject = this;
     // Initialize the Group Data Model before setitng up our QML Scene
     // as the QML scene will bind to the data model
     initDataModel();
 
     // Create a QMLDocument from the definition in main.qml
-    QmlDocument *qml = QmlDocument::create("asset:///main.qml").parent(this);
+    rootQml = QmlDocument::create("asset:///main.qml");
 
     //-- setContextProperty expose C++ object in QML as an variable
     // this must come before the next line so the root is instantiated after app is defined.
-    qml->setContextProperty("_app", this);
+    rootQml->setContextProperty("_app", this);
 
     // Creates the root node object as defined in main.qml
-    AbstractPane *root = qml->createRootObject<AbstractPane>();
+    root = rootQml->createRootObject<AbstractPane>();
 
     // Give the application the root node to display.
     Application::instance()->setScene(root);
@@ -59,6 +70,7 @@ App::App()
     // Inform the UI if the database was successfully initialized or not
     root->setProperty("databaseOpen", dbInited);
 
+    activeTransaction = false;
 	_nfcManager = NfcManager::getInstance();
 	_nfcManager->startEventProcessing();
 }
@@ -428,10 +440,9 @@ bool App::authenticateUser(const QString &username, const QString &password)
     }
 
 	if((username == "Jefferson" && password == "123abc") || true){
-		QmlDocument *qml = QmlDocument::create("asset:///transaction.qml");
-		qml->setContextProperty("_app", this);
-		qml->setProperty("button0Text1", "Start Transaction");
-		AbstractPane *transaction = qml->createRootObject<AbstractPane>();
+		transactionQml = QmlDocument::create("asset:///transaction.qml");
+		transactionQml->setContextProperty("_app", this);
+		transaction = transactionQml->createRootObject<AbstractPane>();
 		Application::instance()->setScene(transaction);
 		return true;
 	}
@@ -444,16 +455,33 @@ bool App::authenticateUser(const QString &username, const QString &password)
 
 void App::handleTransaction()
 {
-	SystemProgressToast *toast;
-	toast = new SystemProgressToast(0);
-	toast->setModality(SystemUiModality::Application);
-	toast->setState(SystemUiProgressState::Active);
-	toast->setPosition(SystemUiPosition::TopCenter);
-	toast->setBody("Place BlackBerry on the debit reader");
+	if(activeTransaction){
+		rootQml->setContextProperty("_app", this);
+		root = rootQml->createRootObject<AbstractPane>();
+		Application::instance()->setScene(root);
+		activeTransaction = false;
+		return;
+	}
+	else {
+		activeTransaction = true;
+	}
 
-    bool ok = connect(toast, SIGNAL(finished(bb::system::SystemUiResult::Type)), toast, SLOT(deleteLater()));
-    Q_ASSERT(ok);
-    toast->show();
+	AbstractTextControl *topTextControl = transaction->findChild<AbstractTextControl*>("topText");
+	if(topTextControl){
+		topTextControl->setText("Place BlackBerry on the debit reader");
+	}
+
+	QObject *buttonModify = transaction->findChild<QObject*>("button");
+	if(buttonModify){
+		buttonModify->setProperty("text", "Cancel Payment");
+	}
 
 	_nfcManager->startEchoEmulation();
+}
+void App::showMessage(const QString &text, int field)
+{
+	AbstractTextControl *topTextControl = transaction->findChild<AbstractTextControl*>("topText");
+	if(topTextControl){
+		topTextControl->setText(text);
+	}
 }

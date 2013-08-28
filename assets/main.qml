@@ -24,7 +24,7 @@ Page {
     property string page 
     
     titleBar: TitleBar {
-        title: qsTr("Sign In")
+        title: qsTr("NFC Payment App | Sign In")
         scrollBehavior: TitleBarScrollBehavior.Sticky
     }
     Container {

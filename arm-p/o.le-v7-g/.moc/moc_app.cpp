@@ -22,8 +22,8 @@ static const uint qt_meta_data_App[] = {
        6,       // revision
        0,       // classname
        0,    0, // classinfo
-       6,   14, // methods
-       1,   44, // properties
+       7,   14, // methods
+       1,   49, // properties
        0,    0, // enums/sets
        0,    0, // constructors
        0,       // flags
@@ -36,9 +36,10 @@ static const uint qt_meta_data_App[] = {
      138,  134,    5,    4, 0x02,
      178,  160,    5,    4, 0x02,
      212,    4,    4,    4, 0x02,
+     243,  232,    4,    4, 0x02,
 
  // properties: name, type, flags
-     257,  232, 0x00095409,
+     293,  268, 0x00095409,
 
        0        // eod
 };
@@ -50,8 +51,9 @@ static const char qt_meta_stringdata_App[] = {
     "updateRecord(QString,QString,QString)\0"
     "key\0deleteRecord(QString)\0username,password\0"
     "authenticateUser(QString,QString)\0"
-    "handleTransaction()\0bb::cascades::DataModel*\0"
-    "dataModel\0"
+    "handleTransaction()\0text,field\0"
+    "showMessage(QString,int)\0"
+    "bb::cascades::DataModel*\0dataModel\0"
 };
 
 void App::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, void **_a)
@@ -70,6 +72,7 @@ void App::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, void **
         case 4: { bool _r = _t->authenticateUser((*reinterpret_cast< const QString(*)>(_a[1])),(*reinterpret_cast< const QString(*)>(_a[2])));
             if (_a[0]) *reinterpret_cast< bool*>(_a[0]) = _r; }  break;
         case 5: _t->handleTransaction(); break;
+        case 6: _t->showMessage((*reinterpret_cast< const QString(*)>(_a[1])),(*reinterpret_cast< int(*)>(_a[2]))); break;
         default: ;
         }
     }
@@ -107,9 +110,9 @@ int App::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
-        if (_id < 6)
+        if (_id < 7)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 6;
+        _id -= 7;
     }
 #ifndef QT_NO_PROPERTIES
       else if (_c == QMetaObject::ReadProperty) {

@@ -18,19 +18,34 @@ import bb.cascades 1.2
 Container {
     layout: DockLayout {
     }
+    leftPadding: 30
+    topPadding: 30
+    rightPadding: 30
+    bottomPadding: 150
     
-    Container{
+    Label {
+        objectName: "topText"
+        horizontalAlignment: HorizontalAlignment.Left
+        verticalAlignment: VerticalAlignment.Top
+        text: ""
+        
+    }
+    
+    Label {
+        objectName: "statusText"
+        text: ""
+    }
+
+      
+    Button {
+        objectName: "button"
         horizontalAlignment: HorizontalAlignment.Center
         verticalAlignment: VerticalAlignment.Bottom
-        bottomPadding: 150
-        
-        Button {
-            horizontalAlignment: HorizontalAlignment.Center
-            text: qsTr(buttonText1)
-            onClicked: {
-                _app.handleTransaction();
-            }
+        text: qsTr(buttonText1)
+        onClicked: {
+            _app.handleTransaction();
         }
     }
+    
 }
 //! [0]

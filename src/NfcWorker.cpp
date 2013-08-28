@@ -29,20 +29,14 @@
 #include "Settings.hpp"
 #include "Utilities.hpp"
 
-#include "app.hpp"
-
-#include "Person.hpp"
-
 #include <bb/cascades/AbstractPane>
+#include <bb/cascades/AbstractTextControl>
 #include <bb/cascades/Application>
 #include <bb/cascades/QmlDocument>
-#include <bb/data/SqlConnection>
-#include <bb/data/SqlDataAccess>
 #include <bb/system/SystemDialog>
 #include <bb/system/SystemProgressToast>
 
-#include <QtSql/QtSql>
-#include <QDebug>
+#include "app.hpp"
 
 using namespace bb::cascades;
 using namespace bb::system;
@@ -2314,13 +2308,7 @@ bool NfcWorker::debitMachineResponder(int code, QString text, int data){
 }
 
 void NfcWorker::handlePaymentRequest(nfc_target_t *target){
-	SystemProgressToast *toast;
-	toast = new SystemProgressToast(0);
-	toast->setModality(SystemUiModality::Application);
-	toast->setState(SystemUiProgressState::Active);
-	toast->setPosition(SystemUiPosition::TopCenter);
-	toast->setAutoUpdateEnabled(true);
-	toast->show();
+	appObject->showMessage("Making payment", 0);
 
 	debitMachineMessageType message_received;
 	message_received = debitMachineListener(target);
@@ -2361,33 +2349,33 @@ void NfcWorker::handlePaymentRequest(nfc_target_t *target){
 			break;
 
 		case IN_CODE_SENDING_PAYMENT_AMOUNT:
-			toast->setBody("Received payment amount");
+//			toast->setBody("Received payment amount");
 			outCode = OUT_CODE_PAYMENT_AMOUNT_INVALID;
 			outCode = OUT_CODE_PAYMENT_AMOUNT_RECEIVED_CONF;
 			break;
 
 		case IN_CODE_SENDING_MERCHANT_ACCT_NUM:
-			toast->setBody("Received account number");
+//			toast->setBody("Received account number");
 			outCode = OUT_CODE_ACCT_NUM_INVALID;
 			outCode = OUT_CODE_ACCT_NUM_RECEIVED_CONF;
 			break;
 
 		case IN_CODE_SERVER_CONNECTION_STATUS_REQ:
-			toast->setBody("connecting to server...");
+//			toast->setBody("connecting to server...");
 			outCode = OUT_CODE_CONNECTING_TO_SERVER;
 			outCode = OUT_CODE_SERVER_CONNECTION_FAILED;
 			outCode = OUT_CODE_SERVER_CONNECTION_SUCCESS;
 			break;
 
 		case IN_CODE_AUTH_STATUS_REQ:
-			toast->setBody("authenticating...");
+//			toast->setBody("authenticating...");
 			outCode = OUT_CODE_AUTHENTICATING;
 			outCode = OUT_CODE_AUTHENTICATION_FAILED;
 			outCode = OUT_CODE_AUTHENTICATION_SUCCESS;
 			break;
 
 		case IN_CODE_VERIFICATION_STATUS_REQ:
-			toast->setBody("Payment successful!");
+//			toast->setBody("Payment successful!");
 			outCode = OUT_CODE_VERIFYING;
 			outCode = OUT_CODE_TRANSACTION_FAILED;
 			outCode = OUT_CODE_TRANSACTION_SUCCESS;
