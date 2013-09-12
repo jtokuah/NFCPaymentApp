@@ -30,12 +30,34 @@ Container {
         text: ""
         
     }
+    Container {
+        topPadding: 250
+        horizontalAlignment: HorizontalAlignment.Center 
+        ActivityIndicator {
+            objectName: "indicator"
+            preferredWidth: 100                  
+        }
+    }
     
     Label {
         objectName: "statusText"
+        horizontalAlignment: HorizontalAlignment.Center
+        verticalAlignment: VerticalAlignment.Center
         text: ""
     }
-
+    
+    Container {
+        topPadding: 620
+        horizontalAlignment: HorizontalAlignment.Center
+        Button {
+            objectName: "exitButton"
+            text: "Exit"
+            visible: false
+            onClicked: {
+                Application.quit();
+            }
+        } 
+    }
       
     Button {
         objectName: "button"

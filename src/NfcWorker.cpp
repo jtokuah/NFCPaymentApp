@@ -2154,19 +2154,6 @@ void NfcWorker::displayTagInformation(nfc_target_t* target, bool display_ndef_de
 
 }
 
-void NfcWorker::transactionStatus(const QString &message){
-	SystemProgressToast *toast;
-	toast = new SystemProgressToast(0);
-	toast->setModality(SystemUiModality::Application);
-	toast->setState(SystemUiProgressState::Active);
-	toast->setPosition(SystemUiPosition::TopCenter);
-	toast->setBody(message);
-
-    bool ok = connect(toast, SIGNAL(finished(bb::system::SystemUiResult::Type)), toast, SLOT(deleteLater()));
-    Q_ASSERT(ok);
-    toast->show();
-}
-
 debitMachineMessageType NfcWorker::debitMachineListener(nfc_target_t *target){
 	debitMachineMessageType received_message;
 	received_message.transactionCode = IN_CODE_INVALID;
@@ -2224,7 +2211,6 @@ debitMachineMessageType NfcWorker::debitMachineListener(nfc_target_t *target){
 
 
 	QString messageString = QString::fromUtf8(commandData.constData(), command_length);
-	//emit message(QString("Command APDU : %1").arg(commandAsHex));
 
 	//create and initialize incoming message structure
 	int count = 0;
@@ -2262,9 +2248,6 @@ debitMachineMessageType NfcWorker::debitMachineListener(nfc_target_t *target){
 	received_message.text = QString::fromUtf8(textArray);
 	received_message.data = atoi(dataArray);
 
-	//emit message(QString("In Transaction Code : %1\n").arg(received_message.transactionCode));
-	//emit message(QString("In Text : %1").arg(received_message.text));
-	//emit message(QString("In Data : %1").arg(received_message.data));
 	return received_message;
 }
 
@@ -2280,7 +2263,6 @@ bool NfcWorker::debitMachineResponder(int code, QString text, int data){
 	memcpy(outgoing_message, outChar, strlen(outChar));
 	outgoing_message[strlen(outChar)] = '\0';
 
-	//emit message(QString("Response1 : %1").arg(outString));
 	size_t response_length = strlen(outgoing_message) + 2;
 
 	unsigned char response [response_length];
@@ -2296,11 +2278,9 @@ bool NfcWorker::debitMachineResponder(int code, QString text, int data){
 	QByteArray responseData = QByteArray::fromRawData(reinterpret_cast<const char *>(response), response_length);
 	QString responseAsHex = QString::fromAscii(responseData.toHex());
 
-	//emit message(QString("Response APDU : %1").arg(responseAsHex));
 	nfc_result_t result = nfc_send_iso14443_4_emulation_command_response(response, response_length);
 	if (result != NFC_RESULT_SUCCESS) {
 		qDebug() << QString("nfc_send_iso14443_4_emulation_command_response response: %d").arg(result);
-		//emit message(QString("nfc_send_iso14443_4_emulation_command_response response: %d").arg(result));
 		success = false;
 	}
 
@@ -2309,7 +2289,14 @@ bool NfcWorker::debitMachineResponder(int code, QString text, int data){
 
 void NfcWorker::handlePaymentRequest(nfc_target_t *target){
 	qDebug() << "XXXX NfcWorker::handlePaymentRequest entered";
-	((App*)appObject)->showMessage("", 1);
+	QObject::connect(this, SIGNAL(pushMessage(QString, QString)), (App*)appObject, SLOT(showMessage(QString, QString)));
+	QObject::connect(this, SIGNAL(controlIndicator(QString)), (App*)appObject, SLOT(activityIndicator(QString)));
+	QObject::connect(this, SIGNAL(showExitButton(bool)), (App*)appObject, SLOT(exitButton(bool)));
+	QObject::connect(this, SIGNAL(changeButtonText(QString)), (App*)appObject, SLOT(buttonText(QString)));
+	QObject::connect(this, SIGNAL(changeActivityFlag(bool)), (App*)appObject, SLOT(activityFlag(bool)));
+
+	pushMessage("Transaction in progress...", "topText");
+	controlIndicator("start");
 
 	debitMachineMessageType message_received;
 	message_received = debitMachineListener(target);
@@ -2350,45 +2337,47 @@ void NfcWorker::handlePaymentRequest(nfc_target_t *target){
 			break;
 
 		case IN_CODE_SENDING_PAYMENT_AMOUNT:
-			((App*)appObject)->showMessage("Received payment amount", 2);
+			pushMessage("Received payment amount", "statusText");
 			outCode = OUT_CODE_PAYMENT_AMOUNT_INVALID;
 			outCode = OUT_CODE_PAYMENT_AMOUNT_RECEIVED_CONF;
 			break;
 
 		case IN_CODE_SENDING_MERCHANT_ACCT_NUM:
-			((App*)appObject)->showMessage("Received account number", 2);
+			pushMessage("Received account number", "statusText");
 			outCode = OUT_CODE_ACCT_NUM_INVALID;
 			outCode = OUT_CODE_ACCT_NUM_RECEIVED_CONF;
 			break;
 
 		case IN_CODE_SERVER_CONNECTION_STATUS_REQ:
-			((App*)appObject)->showMessage("connecting to server...", 2);
+			pushMessage("connecting to server...", "statusText");
 			outCode = OUT_CODE_CONNECTING_TO_SERVER;
 			outCode = OUT_CODE_SERVER_CONNECTION_FAILED;
 			outCode = OUT_CODE_SERVER_CONNECTION_SUCCESS;
 			break;
 
 		case IN_CODE_AUTH_STATUS_REQ:
-			((App*)appObject)->showMessage("authenticating...", 2);
+			pushMessage("authenticating...", "statusText");
 			outCode = OUT_CODE_AUTHENTICATING;
 			outCode = OUT_CODE_AUTHENTICATION_FAILED;
 			outCode = OUT_CODE_AUTHENTICATION_SUCCESS;
 			break;
 
 		case IN_CODE_VERIFICATION_STATUS_REQ:
-			((App*)appObject)->showMessage("Payment successful!", 2);
+			pushMessage("", "topText");
+			pushMessage("Payment successful!", "statusText");
 			outCode = OUT_CODE_VERIFYING;
 			outCode = OUT_CODE_TRANSACTION_FAILED;
 			outCode = OUT_CODE_TRANSACTION_SUCCESS;
 			outData = 0;
 			outText = "verified ";
+			controlIndicator("stop");
+			showExitButton(true);
+			changeActivityFlag(false);
+			changeButtonText("Make Another Payment");
 			break;
 
 		default:
 			break;
 	}
-
-//	emit message(QString("Out Text : %1").arg(outText));
-//	emit message(QString("Out Data : %1").arg(outData));
 	debitMachineResponder(outCode, outText, outData);
 }

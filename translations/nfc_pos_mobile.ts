@@ -4,90 +4,90 @@
 <context>
     <name>App</name>
     <message>
-        <location filename="../src/app.cpp" line="100"/>
+        <location filename="../src/app.cpp" line="103"/>
         <source>Error opening connection to the database: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/app.cpp" line="115"/>
+        <location filename="../src/app.cpp" line="118"/>
         <source>Drop table error: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/app.cpp" line="128"/>
+        <location filename="../src/app.cpp" line="131"/>
         <source>Create table error: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/app.cpp" line="147"/>
+        <location filename="../src/app.cpp" line="150"/>
         <source>You must provide a first or last name.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/app.cpp" line="185"/>
+        <location filename="../src/app.cpp" line="188"/>
         <source>Create record succeeded.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/app.cpp" line="191"/>
+        <location filename="../src/app.cpp" line="194"/>
         <source>Create record error: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/app.cpp" line="217"/>
-        <location filename="../src/app.cpp" line="289"/>
+        <location filename="../src/app.cpp" line="220"/>
+        <location filename="../src/app.cpp" line="292"/>
         <source>You must provide valid integer key.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/app.cpp" line="257"/>
-        <source>Customer with id=%1 was updated.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../src/app.cpp" line="260"/>
-        <location filename="../src/app.cpp" line="324"/>
-        <source>Customer with id=%1 was not found.</source>
+        <source>Customer with id=%1 was updated.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/app.cpp" line="263"/>
         <location filename="../src/app.cpp" line="327"/>
+        <source>Customer with id=%1 was not found.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/app.cpp" line="266"/>
+        <location filename="../src/app.cpp" line="330"/>
         <source>SQL error: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/app.cpp" line="321"/>
+        <location filename="../src/app.cpp" line="324"/>
         <source>Customer with id=%1 was deleted.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/app.cpp" line="399"/>
+        <location filename="../src/app.cpp" line="402"/>
         <source>The customer table is empty.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/app.cpp" line="402"/>
+        <location filename="../src/app.cpp" line="405"/>
         <source>Read records failed: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/app.cpp" line="423"/>
+        <location filename="../src/app.cpp" line="426"/>
         <source>OK</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/app.cpp" line="424"/>
+        <location filename="../src/app.cpp" line="427"/>
         <source>Alert</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/app.cpp" line="437"/>
+        <location filename="../src/app.cpp" line="440"/>
         <source>You must provide both username and password to login</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/app.cpp" line="450"/>
+        <location filename="../src/app.cpp" line="453"/>
         <source>Invalid username and password combination</source>
         <translation type="unfinished"></translation>
     </message>

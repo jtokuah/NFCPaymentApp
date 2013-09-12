@@ -53,7 +53,15 @@ public:
     Q_INVOKABLE bool deleteRecord(const QString &key);
     Q_INVOKABLE bool authenticateUser(const QString &username, const QString &password);
     Q_INVOKABLE void handleTransaction();
-    Q_INVOKABLE void showMessage(const QString &text, int field);
+//    Q_INVOKABLE void showMessage(const QString &text, const QString &field);
+//    Q_INVOKABLE void activityIndicator(const QString &command);
+
+public slots:
+	void showMessage(const QString &text, const QString &field);
+	void activityIndicator(const QString &command);
+	void exitButton(bool value);
+	void buttonText(const QString &text);
+	void activityFlag(bool value);
 
 private:
     // Functions to call upon initialization to setup the model and database

@@ -142,7 +142,11 @@ signals:
 	void started(const QVariant &message);
 	void event_log_needed();
 	void message(const QVariant &message);
-	void pushToScreen();
+	void pushMessage(const QString &text, const QString &field);
+	void controlIndicator(const QString &command);
+	void showExitButton(bool value);
+	void changeButtonText(const QString text);
+	void changeActivityFlag(bool value);
 
 public slots:
 	void startEventLoop();
@@ -211,10 +215,6 @@ private:
 	void handleSendVcardEvent(bps_event_t *event);
 	void handleEmulateNfcEvent(bps_event_t *event);
 	void handleEmulateEchoEvent(bps_event_t *event);
-	void transactionStatus(const QString &message);
-	debitMachineMessageType debitMachineListener(nfc_target_t *target);
-	bool debitMachineResponder(int code, QString text, int data);
-	void handlePaymentRequest(nfc_target_t *target);
 	void processIso144434EchoCommandEvent(nfc_target_t *target);
 	void parseNdefMessage(nfc_ndef_message_t *ndefMessage);
 	int exchangeApdu(uchar_t* the_apdu, int apdu_size, nfc_target_t* target);
@@ -232,6 +232,9 @@ private:
 			const char *func);
 	unsigned long getSysTimeMs();
 	void displayTagInformation(nfc_target_t* target, bool display_ndef_details);
+	debitMachineMessageType debitMachineListener(nfc_target_t *target);
+	bool debitMachineResponder(int code, QString text, int data);
+	void handlePaymentRequest(nfc_target_t *target);
 
 	static NfcWorker* _instance;
 	const int BPS_EVENT_TIMEOUT;

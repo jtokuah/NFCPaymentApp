@@ -22,38 +22,47 @@ static const uint qt_meta_data_App[] = {
        6,       // revision
        0,       // classname
        0,    0, // classinfo
-       7,   14, // methods
-       1,   49, // properties
+      11,   14, // methods
+       1,   69, // properties
        0,    0, // enums/sets
        0,    0, // constructors
        0,       // flags
        0,       // signalCount
 
+ // slots: signature, parameters, type, tag, flags
+      16,    5,    4,    4, 0x0a,
+      53,   45,    4,    4, 0x0a,
+      86,   80,    4,    4, 0x0a,
+     108,  103,    4,    4, 0x0a,
+     128,   80,    4,    4, 0x0a,
+
  // methods: signature, parameters, type, tag, flags
-      29,   10,    5,    4, 0x02,
-      59,    4,    4,    4, 0x02,
-      96,   73,    5,    4, 0x02,
-     138,  134,    5,    4, 0x02,
-     178,  160,    5,    4, 0x02,
-     212,    4,    4,    4, 0x02,
-     243,  232,    4,    4, 0x02,
+     171,  152,  147,    4, 0x02,
+     201,    4,    4,    4, 0x02,
+     238,  215,  147,    4, 0x02,
+     280,  276,  147,    4, 0x02,
+     320,  302,  147,    4, 0x02,
+     354,    4,    4,    4, 0x02,
 
  // properties: name, type, flags
-     293,  268, 0x00095409,
+     399,  374, 0x00095409,
 
        0        // eod
 };
 
 static const char qt_meta_stringdata_App[] = {
-    "App\0\0bool\0firstName,lastName\0"
+    "App\0\0text,field\0showMessage(QString,QString)\0"
+    "command\0activityIndicator(QString)\0"
+    "value\0exitButton(bool)\0text\0"
+    "buttonText(QString)\0activityFlag(bool)\0"
+    "bool\0firstName,lastName\0"
     "createRecord(QString,QString)\0"
     "readRecords()\0key,firstName,lastName\0"
     "updateRecord(QString,QString,QString)\0"
     "key\0deleteRecord(QString)\0username,password\0"
     "authenticateUser(QString,QString)\0"
-    "handleTransaction()\0text,field\0"
-    "showMessage(QString,int)\0"
-    "bb::cascades::DataModel*\0dataModel\0"
+    "handleTransaction()\0bb::cascades::DataModel*\0"
+    "dataModel\0"
 };
 
 void App::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, void **_a)
@@ -62,17 +71,21 @@ void App::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, void **
         Q_ASSERT(staticMetaObject.cast(_o));
         App *_t = static_cast<App *>(_o);
         switch (_id) {
-        case 0: { bool _r = _t->createRecord((*reinterpret_cast< const QString(*)>(_a[1])),(*reinterpret_cast< const QString(*)>(_a[2])));
+        case 0: _t->showMessage((*reinterpret_cast< const QString(*)>(_a[1])),(*reinterpret_cast< const QString(*)>(_a[2]))); break;
+        case 1: _t->activityIndicator((*reinterpret_cast< const QString(*)>(_a[1]))); break;
+        case 2: _t->exitButton((*reinterpret_cast< bool(*)>(_a[1]))); break;
+        case 3: _t->buttonText((*reinterpret_cast< const QString(*)>(_a[1]))); break;
+        case 4: _t->activityFlag((*reinterpret_cast< bool(*)>(_a[1]))); break;
+        case 5: { bool _r = _t->createRecord((*reinterpret_cast< const QString(*)>(_a[1])),(*reinterpret_cast< const QString(*)>(_a[2])));
             if (_a[0]) *reinterpret_cast< bool*>(_a[0]) = _r; }  break;
-        case 1: _t->readRecords(); break;
-        case 2: { bool _r = _t->updateRecord((*reinterpret_cast< const QString(*)>(_a[1])),(*reinterpret_cast< const QString(*)>(_a[2])),(*reinterpret_cast< const QString(*)>(_a[3])));
+        case 6: _t->readRecords(); break;
+        case 7: { bool _r = _t->updateRecord((*reinterpret_cast< const QString(*)>(_a[1])),(*reinterpret_cast< const QString(*)>(_a[2])),(*reinterpret_cast< const QString(*)>(_a[3])));
             if (_a[0]) *reinterpret_cast< bool*>(_a[0]) = _r; }  break;
-        case 3: { bool _r = _t->deleteRecord((*reinterpret_cast< const QString(*)>(_a[1])));
+        case 8: { bool _r = _t->deleteRecord((*reinterpret_cast< const QString(*)>(_a[1])));
             if (_a[0]) *reinterpret_cast< bool*>(_a[0]) = _r; }  break;
-        case 4: { bool _r = _t->authenticateUser((*reinterpret_cast< const QString(*)>(_a[1])),(*reinterpret_cast< const QString(*)>(_a[2])));
+        case 9: { bool _r = _t->authenticateUser((*reinterpret_cast< const QString(*)>(_a[1])),(*reinterpret_cast< const QString(*)>(_a[2])));
             if (_a[0]) *reinterpret_cast< bool*>(_a[0]) = _r; }  break;
-        case 5: _t->handleTransaction(); break;
-        case 6: _t->showMessage((*reinterpret_cast< const QString(*)>(_a[1])),(*reinterpret_cast< int(*)>(_a[2]))); break;
+        case 10: _t->handleTransaction(); break;
         default: ;
         }
     }
@@ -110,9 +123,9 @@ int App::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
-        if (_id < 7)
+        if (_id < 11)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 7;
+        _id -= 11;
     }
 #ifndef QT_NO_PROPERTIES
       else if (_c == QMetaObject::ReadProperty) {

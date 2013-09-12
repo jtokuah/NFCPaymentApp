@@ -15,6 +15,7 @@
 #include "app.hpp"
 #include "Person.hpp"
 
+#include <bb/cascades/ActivityIndicator>
 #include <bb/cascades/AbstractPane>
 #include <bb/cascades/AbstractTextControl>
 #include <bb/cascades/ActiveTextHandler>
@@ -23,6 +24,7 @@
 #include <bb/cascades/OrientationSupport>
 #include <bb/data/SqlDataAccess>
 #include <bb/data/SqlConnection>
+
 
 #include <QtSql/QtSql>
 
@@ -70,8 +72,9 @@ App::App()
 
     activeTransaction = false;
 	_nfcManager = NfcManager::getInstance();
-	_nfcManager->startEventProcessing();
 	_nfcManager->_workerInstance->appObject = this;
+	_nfcManager->startEventProcessing();
+
 }
 //! [0]
 void App::initDataModel()
@@ -465,24 +468,58 @@ void App::handleTransaction()
 		activeTransaction = true;
 	}
 
-	AbstractTextControl *topTextControl = transaction->findChild<AbstractTextControl*>("topText");
-	if(topTextControl){
-		topTextControl->setText("Place BlackBerry on the debit reader");
+	//restart event processing if this is not the first transaction
+	QObject *button = transaction->findChild<QObject*>("exitButton");
+	if(button){
+		if ((button->property("visible")).toBool()){
+			_nfcManager->startEventProcessing();
+			exitButton(false);
+		}
 	}
 
-	QObject *buttonModify = transaction->findChild<QObject*>("button");
-	if(buttonModify){
-		buttonModify->setProperty("text", "Cancel Payment");
-	}
+	showMessage("", "statusText");
+	showMessage("Place BlackBerry on the debit reader", "topText");
+	buttonText("Cancel Payment");
 
 	_nfcManager->startEchoEmulation();
 }
 
-void App::showMessage(const QString &text, int field)
+void App::showMessage(const QString &text, const QString &field)
 {
 	qDebug() << "XXXX App::showMessage entered";
-	AbstractTextControl *topTextControl = transaction->findChild<AbstractTextControl*>("topText");
-	if(topTextControl){
-		topTextControl->setText(text);
+	AbstractTextControl *textControl = transaction->findChild<AbstractTextControl*>(field);
+	if(textControl){
+		textControl->setText(text);
 	}
 }
+
+void App::activityIndicator(const QString &command)
+{
+	ActivityIndicator *indicator = transaction->findChild<ActivityIndicator*>("indicator");
+	if(indicator){
+		if (command == "start") indicator->start();
+		else if (command == "stop") indicator->stop();
+	}
+}
+
+void App::exitButton(bool value)
+{
+	QObject *button = transaction->findChild<QObject*>("exitButton");
+	if(button){
+		button->setProperty("visible", value);
+	}
+}
+
+void App::buttonText(const QString &text)
+{
+	QObject *button = transaction->findChild<QObject*>("button");
+	if(button){
+		button->setProperty("text", text);
+	}
+}
+
+void App::activityFlag(bool value)
+{
+	activeTransaction = value;
+}
+
