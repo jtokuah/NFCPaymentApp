@@ -73,7 +73,7 @@
     </splashScreens>
     <configuration name="Device-Debug">
        <platformArchitecture>armle-v7</platformArchitecture>
-       <asset path="Device-Debug/NFCPaymentApp" entry="true" type="Qnx/Elf">NFCPaymentApp</asset>
+       <asset path="arm/o.le-v7-g/nfc_pos_mobile" entry="true" type="Qnx/Elf">nfc_pos_mobile</asset>
     </configuration>
     <configuration name="Device-Release">
        <entryPointType>Qnx/Cascades</entryPointType>
@@ -87,6 +87,10 @@
     <configuration name="Simulator-Debug">
        <platformArchitecture>x86</platformArchitecture>
        <asset path="x86/o-g/nfc_pos_mobile" entry="true" type="Qnx/Elf">nfc_pos_mobile</asset>
+    </configuration>
+    <configuration name="New">
+       <platformArchitecture>armle-v7</platformArchitecture>
+       <asset type="Qnx/Elf" entry="true" path="arm/o.le-v7-g/nfc_pos_mobile">nfc_pos_mobile</asset>
     </configuration>
     
     <!--  The icon for the application -->

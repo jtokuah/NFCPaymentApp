@@ -33,7 +33,6 @@ private:
 	NfcManager();
 
 	static NfcManager* _instance;
-	NfcWorker* _workerInstance;
 	QThread * _bpsThread;
 	QString *_ndefUri;
 	QString *_ndefText;
@@ -52,6 +51,8 @@ private:
 	QFutureWatcher<void> *_watcher;
 
 public:
+	NfcWorker* _workerInstance;
+
 	virtual ~NfcManager();
 	static NfcManager* getInstance();
 

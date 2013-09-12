@@ -14,8 +14,6 @@
  */
 
 #include "app.hpp"
-#include "NfcWorker.hpp"
-
 #include <bb/cascades/Application>
 
 using ::bb::cascades::Application;

@@ -3,66 +3,39 @@
 
 <cproject storage_type_id="org.eclipse.cdt.core.XmlProjectDescriptionStorage">
 	<storageModule moduleId="org.eclipse.cdt.core.settings">
-		<cconfiguration id="com.qnx.qcc.toolChain.314767812">
-			<storageModule buildSystemId="org.eclipse.cdt.managedbuilder.core.configurationDataProvider" id="com.qnx.qcc.toolChain.314767812" moduleId="org.eclipse.cdt.core.settings" name="Device-Profile">
+		<cconfiguration id="com.qnx.qcc.toolChain.661127341.318460752">
+			<storageModule buildSystemId="org.eclipse.cdt.managedbuilder.core.configurationDataProvider" id="com.qnx.qcc.toolChain.661127341.318460752" moduleId="org.eclipse.cdt.core.settings" name="Device-Debug">
 				<externalSettings/>
 				<extensions>
 					<extension id="com.qnx.tools.ide.qde.core.QDEBynaryParser" point="org.eclipse.cdt.core.BinaryParser"/>
-					<extension id="org.eclipse.cdt.core.GCCErrorParser" point="org.eclipse.cdt.core.ErrorParser"/>
 					<extension id="org.eclipse.cdt.core.GmakeErrorParser" point="org.eclipse.cdt.core.ErrorParser"/>
 					<extension id="org.eclipse.cdt.core.CWDLocator" point="org.eclipse.cdt.core.ErrorParser"/>
+					<extension id="org.eclipse.cdt.core.GCCErrorParser" point="org.eclipse.cdt.core.ErrorParser"/>
 				</extensions>
 			</storageModule>
 			<storageModule moduleId="cdtBuildSystem" version="4.0.0">
-				<configuration artifactName="${ProjName}" buildProperties="" description="" id="com.qnx.qcc.toolChain.314767812" name="Device-Profile" parent="org.eclipse.cdt.build.core.emptycfg">
-					<folderInfo id="com.qnx.qcc.toolChain.314767812.1524607914" name="/" resourcePath="">
-						<toolChain id="com.qnx.qcc.toolChain.880469410" name="QNX QCC" superClass="com.qnx.qcc.toolChain">
-							<option id="com.qnx.qcc.option.os.1914099786" name="Target OS:" superClass="com.qnx.qcc.option.os"/>
-							<option id="com.qnx.qcc.option.cpu.540493849" name="Target CPU:" superClass="com.qnx.qcc.option.cpu" value="com.qnx.qcc.option.gen.cpu.armle-v7" valueType="enumerated"/>
-							<option id="com.qnx.qcc.option.compiler.970589216" name="Compiler:" superClass="com.qnx.qcc.option.compiler"/>
-							<option id="com.qnx.qcc.option.runtime.1498463372" name="Runtime:" superClass="com.qnx.qcc.option.runtime"/>
-							<targetPlatform archList="all" binaryParser="com.qnx.tools.ide.qde.core.QDEBynaryParser" id="com.qnx.qcc.targetPlatform.182011293" osList="all" superClass="com.qnx.qcc.targetPlatform"/>
-							<builder autoBuildTarget="Device-Profile" buildPath="${workspace_loc:/NFCPaymentApp}" cleanBuildTarget="clean" enableAutoBuild="true" enableCleanBuild="true" enabledIncrementalBuild="true" id="cdt.managedbuild.target.gnu.builder.base.1935807192" incrementalBuildTarget="Device-Profile" keepEnvironmentInBuildfile="false" managedBuildOn="false" name="Gnu Make Builder" parallelBuildOn="true" parallelizationNumber="optimal" superClass="cdt.managedbuild.target.gnu.builder.base"/>
-							<tool id="com.qnx.qcc.tool.compiler.2083356572" name="QCC Compiler" superClass="com.qnx.qcc.tool.compiler">
-								<option id="com.qnx.qcc.option.compiler.includePath.1668476252" name="Include Directories (-I)" superClass="com.qnx.qcc.option.compiler.includePath" valueType="includePath">
-									<listOptionValue builtIn="false" value="D:/bbndk2/target_10_2_0_1155/qnx6/usr/share/qt4/mkspecs/blackberry-armv7le-qcc"/>
-									<listOptionValue builtIn="false" value="D:/bbndk2/target_10_2_0_1155/qnx6/usr/include/freetype2"/>
-									<listOptionValue builtIn="false" value="D:/bbndk2/target_10_2_0_1155/qnx6/usr/include/qt4/QtDeclarative"/>
-									<listOptionValue builtIn="false" value="D:/bbndk2/target_10_2_0_1155/qnx6/usr/include/qt4/QtCore"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/NFCPaymentApp/arm}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/NFCPaymentApp/src}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/NFCPaymentApp}&quot;"/>
-									<listOptionValue builtIn="false" value="D:/bbndk2/target_10_2_0_1155/qnx6/usr/include/qt4"/>
-									<listOptionValue builtIn="false" value="D:/bbndk2/target_10_2_0_1155/qnx6/usr/include/"/>
-									<listOptionValue builtIn="false" value="D:/bbndk2/target_10_2_0_1155/qnx6/usr/include/cpp"/>
-									<listOptionValue builtIn="false" value="D:/bbndk2/host_10_2_0_15/win32/x86/usr/lib/gcc/arm-unknown-nto-qnx8.0.0eabi/4.6.3/include"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/NFCPaymentApp/arm/o.le-v7-g/.moc}&quot;"/>
-								</option>
-								<option id="com.qnx.qcc.option.compiler.optlevel.1609213454" name="Optimization Level" superClass="com.qnx.qcc.option.compiler.optlevel" value="com.qnx.qcc.option.compiler.optlevel.0" valueType="enumerated"/>
-								<inputType id="com.qnx.qcc.inputType.compiler.575320064" superClass="com.qnx.qcc.inputType.compiler"/>
+				<configuration artifactName="${ProjName}" buildProperties="" description="" id="com.qnx.qcc.toolChain.661127341.318460752" name="Device-Debug" parent="org.eclipse.cdt.build.core.emptycfg">
+					<folderInfo id="com.qnx.qcc.toolChain.661127341.318460752." name="/" resourcePath="">
+						<toolChain id="com.qnx.qcc.toolChain.1220517531" name="com.qnx.qcc.toolChain" superClass="com.qnx.qcc.toolChain">
+							<option id="com.qnx.qcc.option.os.507406784" name="Target OS:" superClass="com.qnx.qcc.option.os"/>
+							<option id="com.qnx.qcc.option.cpu.18721888" name="Target CPU:" superClass="com.qnx.qcc.option.cpu" value="com.qnx.qcc.option.gen.cpu.armle-v7" valueType="enumerated"/>
+							<option id="com.qnx.qcc.option.compiler.396132835" name="Compiler:" superClass="com.qnx.qcc.option.compiler"/>
+							<option id="com.qnx.qcc.option.runtime.98676208" name="Runtime:" superClass="com.qnx.qcc.option.runtime"/>
+							<targetPlatform archList="all" binaryParser="com.qnx.tools.ide.qde.core.QDEBynaryParser" id="com.qnx.qcc.targetPlatform.1565760600" osList="all" superClass="com.qnx.qcc.targetPlatform"/>
+							<builder autoBuildTarget="Device-Debug" enableAutoBuild="true" id="org.eclipse.cdt.build.core.settings.default.builder.1401368828" incrementalBuildTarget="Device-Debug" keepEnvironmentInBuildfile="false" managedBuildOn="false" name="Gnu Make Builder" parallelBuildOn="true" parallelizationNumber="optimal" superClass="org.eclipse.cdt.build.core.settings.default.builder">
+								<outputEntries>
+									<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="outputPath" name=""/>
+								</outputEntries>
+							</builder>
+							<tool id="com.qnx.qcc.tool.compiler.1564684792" name="QCC Compiler" superClass="com.qnx.qcc.tool.compiler">
+								<option id="com.qnx.qcc.option.compiler.optlevel.2082235387" name="Optimization Level" superClass="com.qnx.qcc.option.compiler.optlevel" value="com.qnx.qcc.option.compiler.optlevel.0" valueType="enumerated"/>
+								<inputType id="com.qnx.qcc.inputType.compiler.1579718699" superClass="com.qnx.qcc.inputType.compiler"/>
 							</tool>
-							<tool id="com.qnx.qcc.tool.assembler.1219697634" name="QCC Assembler" superClass="com.qnx.qcc.tool.assembler">
-								<option id="com.qnx.qcc.option.assembler.includePath.675049777" name="Include Directories (-I)" superClass="com.qnx.qcc.option.assembler.includePath" valueType="includePath">
-									<listOptionValue builtIn="false" value="D:/bbndk2/target_10_2_0_1155/qnx6/usr/share/qt4/mkspecs/blackberry-armv7le-qcc"/>
-									<listOptionValue builtIn="false" value="D:/bbndk2/target_10_2_0_1155/qnx6/usr/include/freetype2"/>
-									<listOptionValue builtIn="false" value="D:/bbndk2/target_10_2_0_1155/qnx6/usr/include/qt4/QtDeclarative"/>
-									<listOptionValue builtIn="false" value="D:/bbndk2/target_10_2_0_1155/qnx6/usr/include/qt4/QtCore"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/NFCPaymentApp/arm}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/NFCPaymentApp/src}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/NFCPaymentApp}&quot;"/>
-									<listOptionValue builtIn="false" value="D:/bbndk2/target_10_2_0_1155/qnx6/usr/include/qt4"/>
-									<listOptionValue builtIn="false" value="D:/bbndk2/target_10_2_0_1155/qnx6/usr/include/"/>
-									<listOptionValue builtIn="false" value="D:/bbndk2/target_10_2_0_1155/qnx6/usr/include/cpp"/>
-									<listOptionValue builtIn="false" value="D:/bbndk2/target_10_2_0_1155/qnx6/usr/include/cpp/c"/>
-									<listOptionValue builtIn="false" value="D:/bbndk2/host_10_2_0_15/win32/x86/usr/lib/gcc/arm-unknown-nto-qnx8.0.0eabi/4.6.3/include"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/NFCPaymentApp/arm/o.le-v7-g/.moc}&quot;"/>
-								</option>
-								<inputType id="com.qnx.qcc.inputType.assembler.1393358393" superClass="com.qnx.qcc.inputType.assembler"/>
+							<tool id="com.qnx.qcc.tool.assembler.986118547" name="QCC Assembler" superClass="com.qnx.qcc.tool.assembler">
+								<inputType id="com.qnx.qcc.inputType.assembler.2026200070" superClass="com.qnx.qcc.inputType.assembler"/>
 							</tool>
-							<tool id="com.qnx.qcc.tool.linker.1136243010" name="QCC Linker" superClass="com.qnx.qcc.tool.linker">
-								<option id="com.qnx.qcc.option.linker.langcpp.314169077" name="C++ (-lang-c++)" superClass="com.qnx.qcc.option.linker.langcpp" value="true" valueType="boolean"/>
-							</tool>
-							<tool id="com.qnx.qcc.tool.archiver.250623650" name="QCC Archiver" superClass="com.qnx.qcc.tool.archiver"/>
+							<tool id="com.qnx.qcc.tool.linker.266153047" name="QCC Linker" superClass="com.qnx.qcc.tool.linker"/>
+							<tool id="com.qnx.qcc.tool.archiver.725688384" name="QCC Archiver" superClass="com.qnx.qcc.tool.archiver"/>
 						</toolChain>
 					</folderInfo>
 					<sourceEntries>
@@ -76,19 +49,8 @@
 	<storageModule moduleId="cdtBuildSystem" version="4.0.0">
 		<project id="nfc_pos_mobile.null.1320523453" name="nfc_pos_mobile"/>
 	</storageModule>
-	<storageModule moduleId="refreshScope" versionNumber="2">
-		<configuration configurationName="Device-Debug">
-			<resource resourceType="PROJECT" workspacePath="/nfc_pos_mobile"/>
-		</configuration>
-		<configuration configurationName="Device-Profile">
-			<resource resourceType="PROJECT" workspacePath="/nfc_pos_mobile"/>
-		</configuration>
-		<configuration configurationName="Simulator-Debug">
-			<resource resourceType="PROJECT" workspacePath="/nfc_pos_mobile"/>
-		</configuration>
-		<configuration configurationName="Device-Release">
-			<resource resourceType="PROJECT" workspacePath="/nfc_pos_mobile"/>
-		</configuration>
+	<storageModule moduleId="refreshScope" versionNumber="1">
+		<resource resourceType="PROJECT" workspacePath="/NFCPaymentApp"/>
 	</storageModule>
 	<storageModule moduleId="org.eclipse.cdt.internal.ui.text.commentOwnerProjectMappings"/>
 	<storageModule moduleId="org.eclipse.cdt.make.core.buildtargets"/>
@@ -98,11 +60,23 @@
 		<scannerConfigBuildInfo instanceId="com.qnx.qcc.toolChain.1150493427">
 			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId="com.qnx.tools.ide.qde.managedbuilder.core.qccScannerInfo"/>
 		</scannerConfigBuildInfo>
+		<scannerConfigBuildInfo instanceId="com.qnx.qcc.toolChain.314767812;com.qnx.qcc.toolChain.314767812.1524607914;qnx.custom.SDP_10_1_0_1020_GCC_arm_unknown_nto_qnx8_0_0eabi_latest.gcc.nto.arm.c.compiler.base.898601528;qnx.custom.c.compiler.input.2078732121">
+			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId="com.qnx.tools.ide.qde.managedbuilder.core.ExternalToolchainPerProjectProfileC"/>
+		</scannerConfigBuildInfo>
+		<scannerConfigBuildInfo instanceId="com.qnx.qcc.toolChain.314767812;com.qnx.qcc.toolChain.314767812.1524607914;qnx.recursive.gcc.cpp.compiler.base.1827994547;qnx.recursive.cpp.compiler.input.1778086970">
+			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId="com.qnx.tools.ide.qde.managedbuilder.core.QNXMultiToolchainProfile"/>
+		</scannerConfigBuildInfo>
 		<scannerConfigBuildInfo instanceId="com.qnx.qcc.toolChain.314767812;com.qnx.qcc.toolChain.314767812.1524607914;qnx.custom.SDP_10_2_0_1155_GCC_arm_unknown_nto_qnx8_0_0eabi_latest.gcc.nto.arm.cpp.compiler.base.738905187;qnx.custom.cpp.compiler.input.1223977924">
 			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId="com.qnx.tools.ide.qde.managedbuilder.core.ExternalToolchainPerProjectProfileCPP"/>
 		</scannerConfigBuildInfo>
 		<scannerConfigBuildInfo instanceId="com.qnx.qcc.toolChain.314767812;com.qnx.qcc.toolChain.314767812.1524607914;com.qnx.qcc.tool.compiler.679234772;com.qnx.qcc.inputType.compiler.1771707981">
 			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId="com.qnx.tools.ide.qde.managedbuilder.core.qccScannerInfo"/>
+		</scannerConfigBuildInfo>
+		<scannerConfigBuildInfo instanceId="com.qnx.qcc.toolChain.661127341.318460752">
+			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId="com.qnx.tools.ide.qde.managedbuilder.core.qccScannerInfo"/>
+		</scannerConfigBuildInfo>
+		<scannerConfigBuildInfo instanceId="com.qnx.qcc.toolChain.314767812;com.qnx.qcc.toolChain.314767812.1524607914;qnx.custom.SDP_10_1_0_1020_GCC_arm_unknown_nto_qnx8_0_0eabi_latest.gcc.nto.arm.cpp.compiler.base.1585015586;qnx.custom.cpp.compiler.input.750243347">
+			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId="com.qnx.tools.ide.qde.managedbuilder.core.ExternalToolchainPerProjectProfileCPP"/>
 		</scannerConfigBuildInfo>
 		<scannerConfigBuildInfo instanceId="com.qnx.qcc.toolChain.314767812;com.qnx.qcc.toolChain.314767812.1524607914;qnx.recursive.gcc.cpp.compiler.base.56864805;qnx.recursive.cpp.compiler.input.809566659">
 			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId="com.qnx.tools.ide.qde.managedbuilder.core.QNXMultiToolchainProfile"/>
@@ -126,6 +100,9 @@
 			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId="com.qnx.tools.ide.qde.managedbuilder.core.ExternalToolchainPerProjectProfileC"/>
 		</scannerConfigBuildInfo>
 		<scannerConfigBuildInfo instanceId="com.qnx.qcc.toolChain.661127341.522751451">
+			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId="com.qnx.tools.ide.qde.managedbuilder.core.qccScannerInfo"/>
+		</scannerConfigBuildInfo>
+		<scannerConfigBuildInfo instanceId="com.qnx.qcc.toolChain.314767812;com.qnx.qcc.toolChain.314767812.1524607914;com.qnx.qcc.tool.compiler.418073441;com.qnx.qcc.inputType.compiler.1526356048">
 			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId="com.qnx.tools.ide.qde.managedbuilder.core.qccScannerInfo"/>
 		</scannerConfigBuildInfo>
 		<scannerConfigBuildInfo instanceId="com.qnx.qcc.toolChain.661127341.522751451;com.qnx.qcc.toolChain.661127341.522751451.;qnx.custom.SDP_10_1_0_1020_GCC_arm_unknown_nto_qnx8_0_0eabi_latest.gcc.nto.arm.cpp.compiler.base.1770833220;qnx.custom.cpp.compiler.input.1570170548">

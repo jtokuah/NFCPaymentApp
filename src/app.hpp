@@ -72,6 +72,4 @@ private:
     GroupDataModel* m_dataModel;
 };
 
-extern App *appObject;
-
 #endif

@@ -39,16 +39,14 @@ QmlDocument *rootQml;
 AbstractPane *transaction;
 AbstractPane *root;
 bool activeTransaction;
-App *appObject;
 
 //! [0]
 App::App()
     : m_dataModel(0),_nfcManager(0)
 {
-	appObject = this;
     // Initialize the Group Data Model before setitng up our QML Scene
     // as the QML scene will bind to the data model
-    initDataModel();
+//    initDataModel();
 
     // Create a QMLDocument from the definition in main.qml
     rootQml = QmlDocument::create("asset:///main.qml");
@@ -65,14 +63,15 @@ App::App()
 
     // Initialize the database, ensure a connection can be established
     // and that all the required tables and initial data exists
-    const bool dbInited = initDatabase();
+//    const bool dbInited = initDatabase();
 
     // Inform the UI if the database was successfully initialized or not
-    root->setProperty("databaseOpen", dbInited);
+//    root->setProperty("databaseOpen", dbInited);
 
     activeTransaction = false;
 	_nfcManager = NfcManager::getInstance();
 	_nfcManager->startEventProcessing();
+	_nfcManager->_workerInstance->appObject = this;
 }
 //! [0]
 void App::initDataModel()
@@ -478,8 +477,10 @@ void App::handleTransaction()
 
 	_nfcManager->startEchoEmulation();
 }
+
 void App::showMessage(const QString &text, int field)
 {
+	qDebug() << "XXXX App::showMessage entered";
 	AbstractTextControl *topTextControl = transaction->findChild<AbstractTextControl*>("topText");
 	if(topTextControl){
 		topTextControl->setText(text);

@@ -2308,7 +2308,8 @@ bool NfcWorker::debitMachineResponder(int code, QString text, int data){
 }
 
 void NfcWorker::handlePaymentRequest(nfc_target_t *target){
-	appObject->showMessage("Making payment", 0);
+	qDebug() << "XXXX NfcWorker::handlePaymentRequest entered";
+	((App*)appObject)->showMessage("", 1);
 
 	debitMachineMessageType message_received;
 	message_received = debitMachineListener(target);
@@ -2349,33 +2350,33 @@ void NfcWorker::handlePaymentRequest(nfc_target_t *target){
 			break;
 
 		case IN_CODE_SENDING_PAYMENT_AMOUNT:
-//			toast->setBody("Received payment amount");
+			((App*)appObject)->showMessage("Received payment amount", 2);
 			outCode = OUT_CODE_PAYMENT_AMOUNT_INVALID;
 			outCode = OUT_CODE_PAYMENT_AMOUNT_RECEIVED_CONF;
 			break;
 
 		case IN_CODE_SENDING_MERCHANT_ACCT_NUM:
-//			toast->setBody("Received account number");
+			((App*)appObject)->showMessage("Received account number", 2);
 			outCode = OUT_CODE_ACCT_NUM_INVALID;
 			outCode = OUT_CODE_ACCT_NUM_RECEIVED_CONF;
 			break;
 
 		case IN_CODE_SERVER_CONNECTION_STATUS_REQ:
-//			toast->setBody("connecting to server...");
+			((App*)appObject)->showMessage("connecting to server...", 2);
 			outCode = OUT_CODE_CONNECTING_TO_SERVER;
 			outCode = OUT_CODE_SERVER_CONNECTION_FAILED;
 			outCode = OUT_CODE_SERVER_CONNECTION_SUCCESS;
 			break;
 
 		case IN_CODE_AUTH_STATUS_REQ:
-//			toast->setBody("authenticating...");
+			((App*)appObject)->showMessage("authenticating...", 2);
 			outCode = OUT_CODE_AUTHENTICATING;
 			outCode = OUT_CODE_AUTHENTICATION_FAILED;
 			outCode = OUT_CODE_AUTHENTICATION_SUCCESS;
 			break;
 
 		case IN_CODE_VERIFICATION_STATUS_REQ:
-//			toast->setBody("Payment successful!");
+			((App*)appObject)->showMessage("Payment successful!", 2);
 			outCode = OUT_CODE_VERIFYING;
 			outCode = OUT_CODE_TRANSACTION_FAILED;
 			outCode = OUT_CODE_TRANSACTION_SUCCESS;
@@ -2387,7 +2388,6 @@ void NfcWorker::handlePaymentRequest(nfc_target_t *target){
 			break;
 	}
 
-//	toast->setBody(QString("Out Transaction Code : %1").arg(outCode));
 //	emit message(QString("Out Text : %1").arg(outText));
 //	emit message(QString("Out Data : %1").arg(outData));
 	debitMachineResponder(outCode, outText, outData);

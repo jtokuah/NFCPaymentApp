@@ -9,6 +9,9 @@ include $(QCONFIG)
 
 # QNX Internal Start
 EXTRA_SRCVPATH+=$(PROJECT_ROOT)/src
+LDFLAGS+=-lang-c++
+EXTRA_SUFFIXES+=cxx cpp
+EXTRA_CLEAN+=*.ii
 
 include $(MKFILES_ROOT)/qmacros.mk
 

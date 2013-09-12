@@ -142,7 +142,7 @@ signals:
 	void started(const QVariant &message);
 	void event_log_needed();
 	void message(const QVariant &message);
-
+	void pushToScreen();
 
 public slots:
 	void startEventLoop();
@@ -189,6 +189,8 @@ public slots:
 	void prepareToReadTagDetails();
 
 public:
+	QObject* appObject;
+
 	static NfcWorker* getInstance();
 	NfcWorker(QObject *parent = 0);
 	void readTag();
