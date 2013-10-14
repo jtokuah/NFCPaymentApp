@@ -1,5 +1,5 @@
 1
-72
+75
 720x720/about.qml
 720x720/apdu.qml
 720x720/CreatePage.qml
@@ -60,11 +60,14 @@ images/update.png
 images/uri.png
 images/white_item_bg.png
 images/write.png
+JSON2.json
+JSONmessageStructure.json
 main.qml
 MakePayment.qml
 models/menumodel.xml
 mydata.json
 PageBase.qml
+snippet.json
 transaction.qml
 UpdatePage.qml
 vcard.qml

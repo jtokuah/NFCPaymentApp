@@ -5,15 +5,22 @@ device {
     CONFIG(debug, debug|release) {
         SOURCES +=  $$quote($$BASEDIR/src/About.cpp) \
                  $$quote($$BASEDIR/src/ApduDetails.cpp) \
+                 $$quote($$BASEDIR/src/AppSettings.cpp) \
+                 $$quote($$BASEDIR/src/Dialog.cpp) \
                  $$quote($$BASEDIR/src/EmulateSp.cpp) \
                  $$quote($$BASEDIR/src/EventLog.cpp) \
+                 $$quote($$BASEDIR/src/HttpSampleApp.cpp) \
                  $$quote($$BASEDIR/src/Logger.cpp) \
+                 $$quote($$BASEDIR/src/LoginDialog.cpp) \
                  $$quote($$BASEDIR/src/MainMenu.cpp) \
                  $$quote($$BASEDIR/src/Navigator.cpp) \
                  $$quote($$BASEDIR/src/NdefType.cpp) \
                  $$quote($$BASEDIR/src/NfcManager.cpp) \
                  $$quote($$BASEDIR/src/NfcWorker.cpp) \
                  $$quote($$BASEDIR/src/Person.cpp) \
+                 $$quote($$BASEDIR/src/PostHttp.cpp) \
+                 $$quote($$BASEDIR/src/QtObjectFormatter.cpp) \
+                 $$quote($$BASEDIR/src/RequestHeaders.cpp) \
                  $$quote($$BASEDIR/src/SendVcard.cpp) \
                  $$quote($$BASEDIR/src/Settings.cpp) \
                  $$quote($$BASEDIR/src/StateManager.cpp) \
@@ -27,20 +34,28 @@ device {
                  $$quote($$BASEDIR/src/alternatinglistitem.cpp) \
                  $$quote($$BASEDIR/src/app.cpp) \
                  $$quote($$BASEDIR/src/applicationui.cpp) \
+                 $$quote($$BASEDIR/src/json.cpp) \
                  $$quote($$BASEDIR/src/main.cpp) \
                  $$quote($$BASEDIR/src/mylistmodel.cpp)
 
         HEADERS +=  $$quote($$BASEDIR/src/About.hpp) \
                  $$quote($$BASEDIR/src/ApduDetails.hpp) \
+                 $$quote($$BASEDIR/src/AppSettings.hpp) \
+                 $$quote($$BASEDIR/src/Dialog.hpp) \
                  $$quote($$BASEDIR/src/EmulateSp.hpp) \
                  $$quote($$BASEDIR/src/EventLog.hpp) \
+                 $$quote($$BASEDIR/src/HttpSampleApp.hpp) \
                  $$quote($$BASEDIR/src/Logger.hpp) \
+                 $$quote($$BASEDIR/src/LoginDialog.hpp) \
                  $$quote($$BASEDIR/src/MainMenu.hpp) \
                  $$quote($$BASEDIR/src/Navigator.hpp) \
                  $$quote($$BASEDIR/src/NdefType.hpp) \
                  $$quote($$BASEDIR/src/NfcManager.hpp) \
                  $$quote($$BASEDIR/src/NfcWorker.hpp) \
                  $$quote($$BASEDIR/src/Person.hpp) \
+                 $$quote($$BASEDIR/src/PostHttp.hpp) \
+                 $$quote($$BASEDIR/src/QtObjectFormatter.hpp) \
+                 $$quote($$BASEDIR/src/RequestHeaders.hpp) \
                  $$quote($$BASEDIR/src/SendVcard.hpp) \
                  $$quote($$BASEDIR/src/Settings.hpp) \
                  $$quote($$BASEDIR/src/StateManager.hpp) \
@@ -54,6 +69,7 @@ device {
                  $$quote($$BASEDIR/src/alternatinglistitem.hpp) \
                  $$quote($$BASEDIR/src/app.hpp) \
                  $$quote($$BASEDIR/src/applicationui.hpp) \
+                 $$quote($$BASEDIR/src/json.hpp) \
                  $$quote($$BASEDIR/src/mylistmodel.hpp)
     }
 }

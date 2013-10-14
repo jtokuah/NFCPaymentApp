@@ -13,10 +13,19 @@
  * limitations under the License.
  */
 
-#include "app.hpp"
+
 #include <bb/cascades/Application>
+#include <bb/cascades/QmlDocument>
+
+#include "app.hpp"
+#include "LoginDialog.hpp"
+#include "Dialog.hpp"
+
+#include <QLocale>
+#include <QTranslator>
 
 using ::bb::cascades::Application;
+using namespace bb::cascades;
 
 // this allows us to write "Application"
 // instead of "bb::cascades::Application"
@@ -26,9 +35,16 @@ using ::bb::cascades::Application;
 // yourself.
 Q_DECL_EXPORT int main(int argc, char **argv)
 {
+	qmlRegisterType<LoginDialog>("Dialog.Login", 1, 0, "LoginDialog");
     // "Application" is the BB cascades class that handles interaction the
     // with BB10 operating system.
     Application app(argc, argv);
+
+	// localization support
+	QTranslator translator;
+	const QString locale_string = QLocale().name();
+	const QString filename = QString::fromLatin1("filepicker_%1").arg(
+			locale_string);
 
     // Create an instance of App on the stack. App's
     // constructor registers itself with Application object using setScene().

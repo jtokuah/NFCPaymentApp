@@ -14,6 +14,7 @@
  */
 
 import bb.cascades 1.0
+import Dialog.Login 1.0
 
 // The root node has to inherit from AbstractPane -- in this case a Page.
 // There is always only ONE root not in a QML file and it is typically
@@ -24,7 +25,7 @@ Page {
     property string page 
     
     titleBar: TitleBar {
-        title: qsTr("NFC Payment App | Sign In")
+        title: qsTr("NFC Payment App | Login")
         scrollBehavior: TitleBarScrollBehavior.Sticky
     }
     Container {
@@ -38,29 +39,42 @@ Page {
 	        leftPadding: 30
 	        rightPadding: 30
 	        
-	        TextField {
-	            id: usernameCreateTextField
-	            horizontalAlignment: HorizontalAlignment.Center
-	            
-	            hintText: qsTr("Username")
-	        }
-	        
-	        TextField {
-	            id: passwordCreateTextField
-	            horizontalAlignment: HorizontalAlignment.Center
-	            
-	            hintText: qsTr("Password")
-	        }
-	        
-	        Button {
-	            horizontalAlignment: HorizontalAlignment.Center
-	            
-	            text: qsTr("Sign In")
-	            
-	            onClicked: {
-	                _app.authenticateUser(usernameCreateTextField.text, passwordCreateTextField.text);
-	            }
-	        }
+            Label { id: loginDialogLabel }
+            Button {
+                layoutProperties : StackLayoutProperties {
+                }
+                horizontalAlignment : HorizontalAlignment.Center
+                text : "Login"
+                onClicked: {
+                    loginDialog.addCustomButton("Sign up","Login_Sign_up");
+                    loginDialog.show();
+                }
+            }
+            attachedObjects: [
+                LoginDialog {
+                    id: loginDialog
+                    cancelButton : true
+                    okButton : true
+                    loginMessage : "'Login' to account or 'Sign up'"
+                    usernamePlaceholder : "enter username here"
+                    usernameLabel : "Twitter Email"
+                    passwordPlaceholder : "enter password here"
+                    passwordLabel : "Twitter Password"
+                    remembermeLabel : "Save login info"
+                    rememberme : true
+                    titleText : "Login to NFC Payment App"
+                    onOk: { 
+                        _app.authenticateUser(loginDialog.username, loginDialog.password);
+                    }
+                    onCancel: {
+                        loginDialogLabel.text = ""; 
+                    }
+                    onCustomButton: {
+                        loginDialogLabel.text = "Sorry, 'Sign up' feature not yet supported.'"; 
+                        //loginDialogLabel.text = "index: " + index + " label: " + label + " context: " + context; 
+                    }
+                }
+            ]
          }
     }
 }

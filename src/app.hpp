@@ -15,20 +15,48 @@
 #ifndef APP_HPP
 #define APP_HPP
 
+#include "json.hpp"
 #include <bb/cascades/QmlDocument>
 #include <bb/data/SqlConnection>
 #include <bb/cascades/GroupDataModel>
 #include "NfcManager.hpp"
-
+#include "QtObjectFormatter.hpp"
+#include "HttpSampleApp.hpp"
+#include "LoginDialog.hpp"
+#include "Dialog.hpp"
+#include <QtCore/QFile>
+#include <QtCore/QObject>
+#include <QtCore/QString>
+#include <QtCore/QVariant>
 #include <QtCore>
 
 using namespace bb::cascades;
+using namespace QtJson;
 
 extern QmlDocument *transactionQml;
 extern QmlDocument *rootQml;
 extern AbstractPane *transaction;
 extern AbstractPane *root;
 extern bool activeTransaction;
+extern QVariant parse(const QString &json);
+
+/* Outgoing transaction message codes sent to the payment server */
+	typedef enum{
+		SERVER_OUT_CODE_INVALID = -1,
+		SERVER_OUT_CODE_LOGIN_REQ = 0,
+	    //all new codes should be placed above this line
+	    SERVER_OUT_CODE_MAX
+	}paymentServerOutgoingCodeType;
+
+	/* Incoming transaction message codes received from the payment server */
+	typedef enum{
+		SERVER_IN_CODE_INVALID = -1,
+		SERVER_IN_CODE_LOGIN_SUCCESS = 0,
+		SERVER_IN_CODE_LOGIN_FAILURE = 1,
+		//all new codes should be placed above this line
+		SERVER_IN_CODE_MAX
+	}paymentServerIncomingCodeType;
+
 
 /*
  * @brief Declaration of our application's class (as opposed to the BB Cascades
@@ -67,17 +95,21 @@ private:
     // Functions to call upon initialization to setup the model and database
     void initDataModel();
     bool initDatabase();
+    void loadJsonMessageStructure();
+    QString JSONMapToString(QMap<QString, QVariant> map);
 
     NfcManager* _nfcManager;
+    HttpSampleApp* _httpSampleApp;
 
     // To alert the user if something has gone wrong
-    void alert(const QString &message);
+    void alert(const QString &message, const QString &title);
 
     // The getter method for the property
     bb::cascades::GroupDataModel* dataModel() const;
 
     // The data shown by the list view.
     GroupDataModel* m_dataModel;
+
 };
 
 #endif

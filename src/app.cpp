@@ -12,6 +12,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
+#include "QtObjectFormatter.hpp"
 #include "app.hpp"
 #include "Person.hpp"
 
@@ -24,31 +26,50 @@
 #include <bb/cascades/OrientationSupport>
 #include <bb/data/SqlDataAccess>
 #include <bb/data/SqlConnection>
-
+#include <bb/data/JsonDataAccess>
+#include <bps/dialog.h>
+#include <screen/screen.h>
 
 #include <QtSql/QtSql>
 
 #include <QDebug>
 #include "MainMenu.hpp"
 #include "NfcWorker.hpp"
+#include "HttpSampleApp.hpp"
+#include "RequestHeaders.hpp"
+#include "PostHttp.hpp"
+#include "AppSettings.hpp"
+#include "json.hpp"
+#include "LoginDialog.hpp"
+#include "Dialog.hpp"
+
 
 using namespace bb::cascades;
 using namespace bb::system;
 using namespace bb::data;
+using namespace QtJson;
 
 QmlDocument *transactionQml;
 QmlDocument *rootQml;
 AbstractPane *transaction;
 AbstractPane *root;
 bool activeTransaction;
+QMap<QString, QVariant> jsonMessage;
+
+static QString assetPath(const QString& assetName)
+{
+    return QDir::currentPath() + "/app/native/assets/" + assetName;
+}
 
 //! [0]
 App::App()
-    : m_dataModel(0),_nfcManager(0)
+    : m_dataModel(0),_nfcManager(0), _httpSampleApp(0)
 {
     // Initialize the Group Data Model before setitng up our QML Scene
     // as the QML scene will bind to the data model
 //    initDataModel();
+
+	qmlRegisterType<LoginDialog>("Dialog.Login", 1, 0, "LoginDialog");
 
     // Create a QMLDocument from the definition in main.qml
     rootQml = QmlDocument::create("asset:///main.qml");
@@ -75,6 +96,10 @@ App::App()
 	_nfcManager->_workerInstance->appObject = this;
 	_nfcManager->startEventProcessing();
 
+	loadJsonMessageStructure();
+
+    _httpSampleApp = new HttpSampleApp;
+    _httpSampleApp->setUseHttps(true);
 }
 //! [0]
 void App::initDataModel()
@@ -100,7 +125,7 @@ bool App::initDatabase()
     // and display an error message
     if (database.open() == false) {
         const QSqlError error = database.lastError();
-        alert(tr("Error opening connection to the database: %1").arg(error.text()));
+        alert(tr("Error opening connection to the database: %1").arg(error.text()), "Alert");
         qDebug() << "\nDatabase NOT opened.";
         return false; // return as if we cannot open a connection to the db, then below calls
                       // will also fail
@@ -115,7 +140,7 @@ bool App::initDatabase()
         qDebug() << "Table dropped.";
     } else {
         const QSqlError error = query.lastError();
-        alert(tr("Drop table error: %1").arg(error.text()));
+        alert(tr("Drop table error: %1").arg(error.text()), "Alert");
     }
 
     // Create the 'customers' table that was just dropped (if it existed)
@@ -128,7 +153,7 @@ bool App::initDatabase()
         qDebug() << "Table created.";
     } else {
         const QSqlError error = query.lastError();
-        alert(tr("Create table error: %1").arg(error.text()));
+        alert(tr("Create table error: %1").arg(error.text()), "Alert");
         return false;
     }
 
@@ -147,7 +172,7 @@ bool App::createRecord(const QString &firstName, const QString &lastName)
     //    all the data. In this case, we ensure that at least the firstname OR lastname
     //    contains some form of text.
     if (firstName.trimmed().isEmpty() && lastName.trimmed().isEmpty()) {
-        alert(tr("You must provide a first or last name."));
+        alert(tr("You must provide a first or last name."), "Alert");
         return false;
     }
 
@@ -185,13 +210,13 @@ bool App::createRecord(const QString &firstName, const QString &lastName)
     // 4. Execute the query and check the result
     bool success = false;
     if (query.exec()) {
-        alert(tr("Create record succeeded."));
+        alert(tr("Create record succeeded."), "Alert");
         success = true;
     } else {
         // If 'exec' fails, error information can be accessed via the lastError function
         // the last error is reset every time exec is called.
         const QSqlError error = query.lastError();
-        alert(tr("Create record error: %1").arg(error.text()));
+        alert(tr("Create record error: %1").arg(error.text()), "Alert");
     }
 
     // 5. Optionally close the database connection if we no longer plan to use it
@@ -217,7 +242,7 @@ bool App::updateRecord(const QString &customerID, const QString &firstName, cons
     bool intConversionGood = false;
     const int customerIDKey = customerID.toInt(&intConversionGood);
     if (!intConversionGood) {
-        alert(tr("You must provide valid integer key."));
+        alert(tr("You must provide valid integer key."), "Alert");
         return false;
     }
 
@@ -257,13 +282,13 @@ bool App::updateRecord(const QString &customerID, const QString &firstName, cons
         // 5. Verify that a row was modified, if not, there was no customer
         //    with the specified ID
         if (query.numRowsAffected() > 0) {
-            alert(tr("Customer with id=%1 was updated.").arg(customerID));
+            alert(tr("Customer with id=%1 was updated.").arg(customerID), "Alert");
             updated = true;
         } else {
-            alert(tr("Customer with id=%1 was not found.").arg(customerID));
+            alert(tr("Customer with id=%1 was not found.").arg(customerID), "Alert");
         }
     } else {
-        alert(tr("SQL error: %1").arg(query.lastError().text()));
+        alert(tr("SQL error: %1").arg(query.lastError().text()), "Alert");
     }
 
     // 6. Optionally close the database connection if we no longer plan to use it
@@ -289,7 +314,7 @@ bool App::deleteRecord(const QString &customerID)
     bool intConversionGood = false;
     const int customerIDnumber = customerID.toInt(&intConversionGood);
     if (!intConversionGood) {
-        alert(tr("You must provide valid integer key."));
+        alert(tr("You must provide valid integer key."), "Alert");
         return false;
     }
 
@@ -321,13 +346,13 @@ bool App::deleteRecord(const QString &customerID)
         // 5. Verify that a row was modified, if not, there was no customer
         //    with the specified ID
         if (query.numRowsAffected() > 0) {
-            alert(tr("Customer with id=%1 was deleted.").arg(customerID));
+            alert(tr("Customer with id=%1 was deleted.").arg(customerID), "Alert");
             deleted = true;
         } else {
-            alert(tr("Customer with id=%1 was not found.").arg(customerID));
+            alert(tr("Customer with id=%1 was not found.").arg(customerID), "Alert");
         }
     } else {
-        alert(tr("SQL error: %1").arg(query.lastError().text()));
+        alert(tr("SQL error: %1").arg(query.lastError().text()), "Alert");
     }
 
     // 6. Optionally close the database connection if we no longer plan to use it
@@ -399,10 +424,10 @@ void App::readRecords()
         qDebug() << "Read " << recordsRead << " records succeeded";
 
         if (recordsRead == 0) {
-            alert(tr("The customer table is empty."));
+            alert(tr("The customer table is empty."), "Alert");
         }
     } else {
-        alert(tr("Read records failed: %1").arg(query.lastError().text()));
+        alert(tr("Read records failed: %1").arg(query.lastError().text()), "Alert");
     }
 
     // 6. Optionally close the database connection if we no longer plan to use it
@@ -420,11 +445,11 @@ GroupDataModel* App::dataModel() const
 
 // -----------------------------------------------------------------------------------------------
 // Alert Dialog Box Functions
-void App::alert(const QString &message)
+void App::alert(const QString &message, const QString &title)
 {
     SystemDialog *dialog; // SystemDialog uses the BB10 native dialog.
     dialog = new SystemDialog(tr("OK"), 0); // New dialog with on 'Ok' button, no 'Cancel' button
-    dialog->setTitle(tr("Alert")); // set a title for the message
+    dialog->setTitle(title); // set a title for the message
     dialog->setBody(message); // set the message itself
     dialog->setDismissAutomatically(true); // Hides the dialog when a button is pressed.
 
@@ -436,21 +461,36 @@ void App::alert(const QString &message)
 
 bool App::authenticateUser(const QString &username, const QString &password)
 {
-    if ((username.trimmed().isEmpty() || password.trimmed().isEmpty()) && false) {
-        alert(tr("You must provide both username and password to login"));
+    if ((username.trimmed().isEmpty() || password.trimmed().isEmpty())) {
+        alert(tr("You must provide valid username and password to login"), "Login to NFC Payment App");
         return false;
     }
 
-	if((username == "Jefferson" && password == "123abc") || true){
+    loadJsonMessageStructure();
+
+    jsonMessage.insert("code", SERVER_OUT_CODE_LOGIN_REQ);
+    jsonMessage.insert("custUsername", username);
+    jsonMessage.insert("custPWD", password);
+    jsonMessage.insert("request", true);
+    QString message = JSONMapToString(jsonMessage);
+
+    qDebug() << "XXXX App::Message to server: " << message;
+    QString HTTPMethod = "POST";
+    serverResponseType serverResponse = _httpSampleApp->messageServer(HTTPMethod, message);
+
+
+	if(serverResponse.dataMap.value("code") == SERVER_IN_CODE_LOGIN_SUCCESS){
 		transactionQml = QmlDocument::create("asset:///transaction.qml");
 		transactionQml->setContextProperty("_app", this);
 		transaction = transactionQml->createRootObject<AbstractPane>();
 		Application::instance()->setScene(transaction);
 		return true;
 	}
-
+	else if(serverResponse.dataMap.value("code") == SERVER_IN_CODE_LOGIN_FAILURE){
+		alert(tr("%1").arg(serverResponse.dataMap.value("details").toString()), "Login failed!");
+	}
 	else{
-		alert(tr("Invalid username and password combination"));
+		alert(tr("%1").arg(serverResponse.responseMessage), "Login failed!");
 		return false;
 	}
 }
@@ -523,3 +563,27 @@ void App::activityFlag(bool value)
 	activeTransaction = value;
 }
 
+void App::loadJsonMessageStructure()
+{
+	//Load structure from JSON file and store in String variable
+	QFile jsonFile(assetPath("JSONmessageStructure.json"));
+    if (!jsonFile.open(QFile::ReadOnly)) {
+        qDebug() << "Failed to open JSON file: " << jsonFile.fileName();
+        return;
+    }
+    const QString data = QString::fromUtf8(jsonFile.readAll());
+
+    //parse JSON message structure into Map
+	QVariant jsonStructure = QtJson::parse(data);
+	jsonMessage = jsonStructure.toMap();
+	qDebug() <<"XXXX App::jsonMessageStructure: " << JSONMapToString(jsonMessage);
+}
+
+QString App::JSONMapToString(QMap<QString, QVariant> map)
+{
+	QString out;
+	QVariant temp = QVariant(map);
+	JsonDataAccess ja;
+	ja.saveToBuffer(temp, &out);
+	return out;
+}
