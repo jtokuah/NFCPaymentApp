@@ -63,7 +63,7 @@ static QString assetPath(const QString& assetName)
 
 //! [0]
 App::App()
-    : m_dataModel(0),_nfcManager(0), _httpSampleApp(0)
+    : m_dataModel(0),_nfcManager(0)/*, _httpSampleApp(0)*/
 {
     // Initialize the Group Data Model before setitng up our QML Scene
     // as the QML scene will bind to the data model
@@ -97,9 +97,6 @@ App::App()
 	_nfcManager->startEventProcessing();
 
 	loadJsonMessageStructure();
-
-    _httpSampleApp = new HttpSampleApp;
-    _httpSampleApp->setUseHttps(true);
 }
 //! [0]
 void App::initDataModel()
@@ -467,30 +464,50 @@ bool App::authenticateUser(const QString &username, const QString &password)
     }
 
     loadJsonMessageStructure();
+    QMap<QString, QVariant>::const_iterator it;
+    it = jsonMessage.find("customer");
+    if (it != jsonMessage.end()) {
+    	QMap<QString, QVariant> customer = it.value().toMap();
+        customer.insert("custUsername", username);
+        customer.insert("custPWD", password);
+        jsonMessage.remove("customer");
+        jsonMessage.insert("customer", customer);
+    }
+    it = jsonMessage.find("messageType");
+    if (it != jsonMessage.end()) {
+    	QMap<QString, QVariant> messageType = it.value().toMap();
+    	messageType.insert("code", SERVER_OUT_CODE_LOGIN_REQ);
+    	messageType.insert("request", true);
+        jsonMessage.remove("messageType");
+        jsonMessage.insert("messageType", messageType);
+    }
 
-    jsonMessage.insert("code", SERVER_OUT_CODE_LOGIN_REQ);
-    jsonMessage.insert("custUsername", username);
-    jsonMessage.insert("custPWD", password);
-    jsonMessage.insert("request", true);
     QString message = JSONMapToString(jsonMessage);
-
     qDebug() << "XXXX App::Message to server: " << message;
     QString HTTPMethod = "POST";
+    _httpSampleApp = new HttpSampleApp;
+    _httpSampleApp->setUseHttps(true);
     serverResponseType serverResponse = _httpSampleApp->messageServer(HTTPMethod, message);
 
+    QString response = JSONMapToString(serverResponse.dataMap);
+    qDebug() << "XXXX App::Response from server: " << response;
 
-	if(serverResponse.dataMap.value("code") == SERVER_IN_CODE_LOGIN_SUCCESS){
+	if(serverResponse.dataMap.value("code").toInt() == SERVER_IN_CODE_LOGIN_SUCCESS){
 		transactionQml = QmlDocument::create("asset:///transaction.qml");
 		transactionQml->setContextProperty("_app", this);
 		transaction = transactionQml->createRootObject<AbstractPane>();
 		Application::instance()->setScene(transaction);
+		qDebug() << "XXXX App::User authentication successful";
 		return true;
 	}
-	else if(serverResponse.dataMap.value("code") == SERVER_IN_CODE_LOGIN_FAILURE){
+	else if(serverResponse.dataMap.value("code").toInt() == SERVER_IN_CODE_LOGIN_FAILURE){
 		alert(tr("%1").arg(serverResponse.dataMap.value("details").toString()), "Login failed!");
+		qDebug() << "XXXX App::User authentication failed! - " << serverResponse.dataMap.value("details").toString();
+		return false;
 	}
 	else{
 		alert(tr("%1").arg(serverResponse.responseMessage), "Login failed!");
+		qDebug() << "XXXX App::User authentication failed! - " << serverResponse.responseMessage;
 		return false;
 	}
 }

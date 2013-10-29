@@ -81,6 +81,7 @@ public:
     Q_INVOKABLE bool deleteRecord(const QString &key);
     Q_INVOKABLE bool authenticateUser(const QString &username, const QString &password);
     Q_INVOKABLE void handleTransaction();
+    QString JSONMapToString(QMap<QString, QVariant> map);
 //    Q_INVOKABLE void showMessage(const QString &text, const QString &field);
 //    Q_INVOKABLE void activityIndicator(const QString &command);
 
@@ -96,7 +97,6 @@ private:
     void initDataModel();
     bool initDatabase();
     void loadJsonMessageStructure();
-    QString JSONMapToString(QMap<QString, QVariant> map);
 
     NfcManager* _nfcManager;
     HttpSampleApp* _httpSampleApp;

@@ -1,5 +1,5 @@
 1
-75
+76
 720x720/about.qml
 720x720/apdu.qml
 720x720/CreatePage.qml
@@ -66,6 +66,7 @@ main.qml
 MakePayment.qml
 models/menumodel.xml
 mydata.json
+omone
 PageBase.qml
 snippet.json
 transaction.qml

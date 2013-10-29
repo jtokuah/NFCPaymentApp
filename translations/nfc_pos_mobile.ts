@@ -4,86 +4,86 @@
 <context>
     <name>App</name>
     <message>
-        <location filename="../src/app.cpp" line="128"/>
+        <location filename="../src/app.cpp" line="125"/>
         <source>Error opening connection to the database: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/app.cpp" line="143"/>
+        <location filename="../src/app.cpp" line="140"/>
         <source>Drop table error: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/app.cpp" line="156"/>
+        <location filename="../src/app.cpp" line="153"/>
         <source>Create table error: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/app.cpp" line="175"/>
+        <location filename="../src/app.cpp" line="172"/>
         <source>You must provide a first or last name.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/app.cpp" line="213"/>
+        <location filename="../src/app.cpp" line="210"/>
         <source>Create record succeeded.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/app.cpp" line="219"/>
+        <location filename="../src/app.cpp" line="216"/>
         <source>Create record error: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/app.cpp" line="245"/>
-        <location filename="../src/app.cpp" line="317"/>
+        <location filename="../src/app.cpp" line="242"/>
+        <location filename="../src/app.cpp" line="314"/>
         <source>You must provide valid integer key.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/app.cpp" line="285"/>
+        <location filename="../src/app.cpp" line="282"/>
         <source>Customer with id=%1 was updated.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/app.cpp" line="285"/>
+        <location filename="../src/app.cpp" line="349"/>
+        <source>Customer with id=%1 was not found.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/app.cpp" line="288"/>
         <location filename="../src/app.cpp" line="352"/>
-        <source>Customer with id=%1 was not found.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/app.cpp" line="291"/>
-        <location filename="../src/app.cpp" line="355"/>
         <source>SQL error: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/app.cpp" line="349"/>
+        <location filename="../src/app.cpp" line="346"/>
         <source>Customer with id=%1 was deleted.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/app.cpp" line="427"/>
+        <location filename="../src/app.cpp" line="424"/>
         <source>The customer table is empty.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/app.cpp" line="430"/>
+        <location filename="../src/app.cpp" line="427"/>
         <source>Read records failed: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/app.cpp" line="451"/>
+        <location filename="../src/app.cpp" line="448"/>
         <source>OK</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/app.cpp" line="465"/>
+        <location filename="../src/app.cpp" line="462"/>
         <source>You must provide valid username and password to login</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/app.cpp" line="490"/>
-        <location filename="../src/app.cpp" line="493"/>
+        <location filename="../src/app.cpp" line="503"/>
+        <location filename="../src/app.cpp" line="507"/>
         <source>%1</source>
         <translation type="unfinished"></translation>
     </message>
@@ -130,12 +130,12 @@
 <context>
     <name>PostHttp</name>
     <message>
-        <location filename="../src/PostHttp.cpp" line="165"/>
+        <location filename="../src/PostHttp.cpp" line="140"/>
         <source>Server Error: %1.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/PostHttp.cpp" line="174"/>
+        <location filename="../src/PostHttp.cpp" line="147"/>
         <source>No response from payment server</source>
         <translation type="unfinished"></translation>
     </message>
