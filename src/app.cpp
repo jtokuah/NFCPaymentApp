@@ -456,13 +456,18 @@ void App::alert(const QString &message, const QString &title)
     dialog->show();
 }
 
-bool App::authenticateUser(const QString &username, const QString &password)
+bool App::authenticateUser(const QString &uname, const QString &pwd)
 {
-    if ((username.trimmed().isEmpty() || password.trimmed().isEmpty())) {
+    if ((uname.trimmed().isEmpty() || pwd.trimmed().isEmpty())) {
         alert(tr("You must provide valid username and password to login"), "Login to NFC Payment App");
         return false;
     }
 
+    //Base64-encode login credentials before sending to server
+    QString username  = QString::fromUtf8(uname.toUtf8().toBase64());
+    QString password  = QString::fromUtf8(pwd.toUtf8().toBase64());
+
+    //load message structure and build outgoing message
     loadJsonMessageStructure();
     QMap<QString, QVariant>::const_iterator it;
     it = jsonMessage.find("customer");
@@ -482,16 +487,17 @@ bool App::authenticateUser(const QString &username, const QString &password)
         jsonMessage.insert("messageType", messageType);
     }
 
+    //send authentication message to server and get server response
     QString message = JSONMapToString(jsonMessage);
     qDebug() << "XXXX App::Message to server: " << message;
     QString HTTPMethod = "POST";
     _httpSampleApp = new HttpSampleApp;
     _httpSampleApp->setUseHttps(true);
     serverResponseType serverResponse = _httpSampleApp->messageServer(HTTPMethod, message);
-
     QString response = JSONMapToString(serverResponse.dataMap);
     qDebug() << "XXXX App::Response from server: " << response;
 
+    //check if authentication was successful
 	if(serverResponse.dataMap.value("code").toInt() == SERVER_IN_CODE_LOGIN_SUCCESS){
 		transactionQml = QmlDocument::create("asset:///transaction.qml");
 		transactionQml->setContextProperty("_app", this);
@@ -500,11 +506,15 @@ bool App::authenticateUser(const QString &username, const QString &password)
 		qDebug() << "XXXX App::User authentication successful";
 		return true;
 	}
+
+	//check if authentication failed
 	else if(serverResponse.dataMap.value("code").toInt() == SERVER_IN_CODE_LOGIN_FAILURE){
 		alert(tr("%1").arg(serverResponse.dataMap.value("details").toString()), "Login failed!");
 		qDebug() << "XXXX App::User authentication failed! - " << serverResponse.dataMap.value("details").toString();
 		return false;
 	}
+
+	//check if there was a server error
 	else{
 		alert(tr("%1").arg(serverResponse.responseMessage), "Login failed!");
 		qDebug() << "XXXX App::User authentication failed! - " << serverResponse.responseMessage;

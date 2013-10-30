@@ -82,8 +82,8 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/app.cpp" line="503"/>
-        <location filename="../src/app.cpp" line="507"/>
+        <location filename="../src/app.cpp" line="512"/>
+        <location filename="../src/app.cpp" line="519"/>
         <source>%1</source>
         <translation type="unfinished"></translation>
     </message>
