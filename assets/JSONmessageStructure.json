@@ -1,4 +1,14 @@
 ﻿{
+    "headers": {
+        "Accept-Encoding": "gzip,deflate,sdch",
+        "Cookie": "_gauges_unique_month=1; _gauges_unique_year=1; _gauges_unique=1",
+        "Accept-Language": "en-CA,en-GB,en-US;q=0.8,en;q=0.6",
+        "Accept": "application/json, text/json",
+        "Host": "paymentserver.dynu.com",
+        "Referer": "https://paymentserver.dynu.com",
+        "Connection": "close",
+        "User-Agent": "Mozilla/5.0 (Windows NT 6.2; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/30.0.1599.69 Safari/537.36"
+    },
     "messageType": {
         "code": -1,
         "request": false,
@@ -6,8 +16,10 @@
         "details": ""
     },
     "user": {
+        "userNo": -1,
         "userType": "",
         "transactionHistory": "",
+        "receiveCommunication": false,
         "account": {
             "bankCode": "",
             "accountNum": "",
@@ -22,6 +34,25 @@
         "userID": {
             "username": "",
             "password": ""
+        },
+        "personalInfo": {
+            "firstName": "",
+            "lastName": "",
+            "email": "",
+            "dateOfBirth": {
+                "DOBDay": -1,
+                "DOBMonth": -1,
+                "DOBYear": -1
+            },
+            "occupation": "",
+            "SIN": -1,
+            "address1": "",
+            "address2": "",
+            "city": "",
+            "province": "",
+            "country": "",
+            "postalCode": "",
+            "phoneNumber": -1
         }
     },
     "merchantIdent": {

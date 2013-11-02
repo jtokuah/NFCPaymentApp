@@ -20,10 +20,12 @@
 #include <bb/cascades/ActivityIndicator>
 #include <bb/cascades/AbstractPane>
 #include <bb/cascades/AbstractTextControl>
+#include <bb/cascades/AbstractToggleButton>
 #include <bb/cascades/ActiveTextHandler>
 #include <bb/cascades/Application>
 #include <bb/system/SystemDialog>
 #include <bb/cascades/OrientationSupport>
+#include <bb/cascades/DropDown>
 #include <bb/data/SqlDataAccess>
 #include <bb/data/SqlConnection>
 #include <bb/data/JsonDataAccess>
@@ -55,6 +57,7 @@ AbstractPane *transaction;
 AbstractPane *root;
 bool activeTransaction;
 QMap<QString, QVariant> jsonMessage;
+paymentServerUserProfileType userProfile;
 
 static QString assetPath(const QString& assetName)
 {
@@ -63,11 +66,12 @@ static QString assetPath(const QString& assetName)
 
 //! [0]
 App::App()
-    : m_dataModel(0),_nfcManager(0)/*, _httpSampleApp(0)*/
+    : m_dataModel(0),_nfcManager(0)
 {
     // Initialize the Group Data Model before setitng up our QML Scene
     // as the QML scene will bind to the data model
 //    initDataModel();
+
 
 	qmlRegisterType<LoginDialog>("Dialog.Login", 1, 0, "LoginDialog");
 
@@ -456,6 +460,192 @@ void App::alert(const QString &message, const QString &title)
     dialog->show();
 }
 
+bool App::createUserProfile()
+{
+	qDebug() << "XXXX App::createUserProfile entered";
+	AbstractTextControl *textControl;
+
+	//Retrieve all form data an store in a userProfile structure
+	userProfile.email = root->findChild<AbstractTextControl*>("email")->text();
+	QString username = root->findChild<AbstractTextControl*>("username")->text();
+	QString password = root->findChild<AbstractTextControl*>("password")->text();
+	userProfile.password = root->findChild<AbstractTextControl*>("passwordConfirm")->text();
+	userProfile.POSHWID = root->findChild<AbstractTextControl*>("poshwid")->text().toInt();
+	userProfile.firstName = root->findChild<AbstractTextControl*>("firstName")->text();
+	userProfile.middleName = root->findChild<AbstractTextControl*>("middleName")->text();
+	userProfile.lastName = root->findChild<AbstractTextControl*>("lastName")->text();
+	userProfile.DOBDay = root->findChild<AbstractTextControl*>("dobDate")->text().toInt();
+	userProfile.DOBMonth = root->findChild<AbstractTextControl*>("dobMonth")->text().toInt();
+	userProfile.DOBYear = root->findChild<AbstractTextControl*>("dobYear")->text().toInt();
+	userProfile.occupation = root->findChild<AbstractTextControl*>("occupation")->text();
+	userProfile.SIN = root->findChild<AbstractTextControl*>("sin")->text().toInt();
+	userProfile.address1 = root->findChild<AbstractTextControl*>("address1")->text();
+	userProfile.address2 = root->findChild<AbstractTextControl*>("address2")->text();
+	userProfile.city = root->findChild<AbstractTextControl*>("city")->text();
+	userProfile.province = root->findChild<AbstractTextControl*>("province")->text();
+	userProfile.country = root->findChild<AbstractTextControl*>("country")->text();
+	userProfile.postalCode = root->findChild<AbstractTextControl*>("postalCode")->text();
+	userProfile.phoneNumber = root->findChild<AbstractTextControl*>("phoneNumber")->text().toInt();
+	userProfile.bankCode = root->findChild<AbstractTextControl*>("bankCode")->text();
+	userProfile.accountNum = root->findChild<AbstractTextControl*>("accountNum")->text();
+	userProfile.accountPWD = root->findChild<AbstractTextControl*>("accountPWD")->text();
+	userProfile.userType = root->findChild<DropDown*>("userTypeDrop")->selectedValue().toString();
+	userProfile.receiveCommunication = root->findChild<AbstractToggleButton*>("contactCheck")->isChecked();
+
+    //Base64-encode login credentials before sending to server
+	userProfile.username  = QString::fromUtf8(username.toUtf8().toBase64());
+	userProfile.password  = QString::fromUtf8(password.toUtf8().toBase64());
+
+    //load message structure and build outgoing message
+    loadJsonMessageStructure();
+    QMap<QString, QVariant>::const_iterator it;
+
+    it = jsonMessage.find("user");
+    if (it != jsonMessage.end()) {
+    	QMap<QString, QVariant> user = it.value().toMap();
+        user.insert("userType", userProfile.userType);
+        user.insert("receiveCommunication", userProfile.receiveCommunication);
+        it = user.find("account");
+        if(it != user.end()){
+        	QMap<QString, QVariant> account = it.value().toMap();
+            account.insert("bankCode", userProfile.bankCode);
+            account.insert("accountNum", userProfile.accountNum);
+            account.insert("accountPWD", userProfile.accountPWD);
+            user.remove("account");
+            user.insert("account", account);
+        }
+
+        it = user.find("hardwareInfo");
+        if(it != user.end()){
+        	QMap<QString, QVariant> hardwareInfo = it.value().toMap();
+        	hardwareInfo.insert("POSHWID", userProfile.POSHWID);
+            user.remove("hardwareInfo");
+            user.insert("hardwareInfo", hardwareInfo);
+        }
+
+        it = user.find("userID");
+        if(it != user.end()){
+        	QMap<QString, QVariant> userID = it.value().toMap();
+        	userID.insert("username", userProfile.username);
+        	userID.insert("password", userProfile.password);
+            user.remove("userID");
+            user.insert("userID", userID);
+        }
+
+        it = user.find("personalInfo");
+        if(it != user.end()){
+        	QMap<QString, QVariant> personalInfo= it.value().toMap();
+        	it = personalInfo.find("dateOfBirth");
+            if(it != personalInfo.end()){
+            	QMap<QString, QVariant> dateOfBirth = it.value().toMap();
+            	dateOfBirth.insert("DOBDay", userProfile.DOBDay);
+            	dateOfBirth.insert("DOBMonth", userProfile.DOBMonth);
+            	dateOfBirth.insert("DOBYear", userProfile.DOBYear);
+            	personalInfo.remove("dateOfBirth");
+            	personalInfo.insert("dateOfBirth", dateOfBirth);
+            }
+        	personalInfo.insert("firstName", userProfile.firstName);
+        	personalInfo.insert("personal", userProfile.middleName);
+        	personalInfo.insert("lastName", userProfile.lastName);
+        	personalInfo.insert("email", userProfile.email);
+        	personalInfo.insert("occupation", userProfile.occupation);
+        	personalInfo.insert("SIN", userProfile.SIN);
+        	personalInfo.insert("address1", userProfile.address1);
+        	personalInfo.insert("address2", userProfile.address2);
+        	personalInfo.insert("city", userProfile.city);
+        	personalInfo.insert("province", userProfile.province);
+        	personalInfo.insert("country", userProfile.country);
+        	personalInfo.insert("postalCode", userProfile.postalCode);
+        	personalInfo.insert("phoneNumber", userProfile.phoneNumber);
+            user.remove("personalInfo");
+            user.insert("personalInfo", personalInfo);
+        }
+        jsonMessage.remove("user");
+        jsonMessage.insert("user", user);
+    }
+
+    it = jsonMessage.find("messageType");
+    if (it != jsonMessage.end()) {
+    	QMap<QString, QVariant> messageType = it.value().toMap();
+    	messageType.insert("code", SERVER_OUT_CODE_SIGN_UP_REQ);
+    	messageType.insert("request", true);
+        jsonMessage.remove("messageType");
+        jsonMessage.insert("messageType", messageType);
+    }
+    jsonMessage.remove("customer");
+
+    //send message to server and get server response
+	QString message = JSONMapToString(jsonMessage);
+	qDebug() << "XXXX App::Message to server: " << message;
+	QString HTTPMethod = "POST";
+	_httpSampleApp = new HttpSampleApp;
+	_httpSampleApp->setUseHttps(true);
+	serverResponseType serverResponse = _httpSampleApp->messageServer(HTTPMethod, message);
+	QString response = JSONMapToString(serverResponse.dataMap);
+	qDebug() << "XXXX App::Response from server: " << response;
+
+	//check if authentication was successful
+	it = serverResponse.dataMap.find("messageType");
+	if (it != serverResponse.dataMap.end()) {
+		QMap<QString, QVariant> messType = it.value().toMap();
+		if(messType.value("code").toInt() == SERVER_IN_CODE_SIGN_UP_SUCCESS){
+			//Clear all form entries
+			root->findChild<AbstractTextControl*>("email")->setText("");
+			root->findChild<AbstractTextControl*>("username")->setText("");
+			root->findChild<AbstractTextControl*>("password")->setText("");
+			root->findChild<AbstractTextControl*>("passwordConfirm")->setText("");
+			root->findChild<AbstractTextControl*>("poshwid")->setText("");
+			root->findChild<AbstractTextControl*>("firstName")->setText("");;
+			root->findChild<AbstractTextControl*>("middleName")->setText("");;
+			root->findChild<AbstractTextControl*>("lastName")->setText("");
+			root->findChild<AbstractTextControl*>("dobDate")->setText("");
+			root->findChild<AbstractTextControl*>("dobMonth")->setText("");
+			root->findChild<AbstractTextControl*>("dobYear")->setText("");
+			root->findChild<AbstractTextControl*>("occupation")->setText("");
+			root->findChild<AbstractTextControl*>("sin")->setText("");
+			root->findChild<AbstractTextControl*>("address1")->setText("");
+			root->findChild<AbstractTextControl*>("address2")->setText("");
+			root->findChild<AbstractTextControl*>("city")->setText("");
+			root->findChild<AbstractTextControl*>("province")->setText("");
+			root->findChild<AbstractTextControl*>("country")->setText("");
+			root->findChild<AbstractTextControl*>("postalCode")->setText("");
+			root->findChild<AbstractTextControl*>("phoneNumber")->setText("");
+			root->findChild<AbstractTextControl*>("bankCode")->setText("");
+			root->findChild<AbstractTextControl*>("accountNum")->setText("");
+			root->findChild<AbstractTextControl*>("accountPWD")->setText("");
+			root->findChild<DropDown*>("userTypeDrop")->setSelectedOption(0);
+			root->findChild<AbstractToggleButton*>("contactCheck")->resetChecked();
+
+			transactionQml = QmlDocument::create("asset:///transaction.qml");
+			transactionQml->setContextProperty("_app", this);
+			transaction = transactionQml->createRootObject<AbstractPane>();
+			Application::instance()->setScene(transaction);
+			qDebug() << "XXXX App::Sign up successful";
+			return true;
+		}
+		//check if request failed
+		else if(messType.value("code").toInt() == SERVER_IN_SIGN_UP_FAILURE){
+			alert(tr("%1").arg(messType.value("details").toString()), "Sign-up failed!");
+			qDebug() << "XXXX App::User sign up failed! - - " << messType.value("details").toString();
+			return false;
+		}
+
+		//check if there was a server error
+		else{
+			alert(tr("%1").arg(serverResponse.responseMessage), "Sign up failed!");
+			qDebug() << "XXXX App::User sign up failed! - " << serverResponse.responseMessage;
+			return false;
+		}
+
+	}
+    else{
+		alert(tr("%1").arg("Could not interpret server response"), "Login failed!");
+		qDebug() << "XXXX App::Could not interpret server response";
+		return false;
+    }
+
+}
+
 bool App::authenticateUser(const QString &uname, const QString &pwd)
 {
     if ((uname.trimmed().isEmpty() || pwd.trimmed().isEmpty())) {
@@ -498,28 +688,39 @@ bool App::authenticateUser(const QString &uname, const QString &pwd)
     qDebug() << "XXXX App::Response from server: " << response;
 
     //check if authentication was successful
-	if(serverResponse.dataMap.value("code").toInt() == SERVER_IN_CODE_LOGIN_SUCCESS){
-		transactionQml = QmlDocument::create("asset:///transaction.qml");
-		transactionQml->setContextProperty("_app", this);
-		transaction = transactionQml->createRootObject<AbstractPane>();
-		Application::instance()->setScene(transaction);
-		qDebug() << "XXXX App::User authentication successful";
-		return true;
-	}
+    it = serverResponse.dataMap.find("messageType");
+    if (it != serverResponse.dataMap.end()) {
+    	QMap<QString, QVariant> messType = it.value().toMap();
+    	if(messType.value("code").toInt() == SERVER_IN_CODE_LOGIN_SUCCESS){
+    		transactionQml = QmlDocument::create("asset:///transaction.qml");
+    		transactionQml->setContextProperty("_app", this);
+    		transaction = transactionQml->createRootObject<AbstractPane>();
+    		Application::instance()->setScene(transaction);
+    		qDebug() << "XXXX App::User authentication successful";
+    		return true;
+    	}
 
-	//check if authentication failed
-	else if(serverResponse.dataMap.value("code").toInt() == SERVER_IN_CODE_LOGIN_FAILURE){
-		alert(tr("%1").arg(serverResponse.dataMap.value("details").toString()), "Login failed!");
-		qDebug() << "XXXX App::User authentication failed! - " << serverResponse.dataMap.value("details").toString();
-		return false;
-	}
+    	//check if authentication failed
+    	else if(messType.value("code").toInt() == SERVER_IN_CODE_LOGIN_FAILURE){
+    		alert(tr("%1").arg(messType.value("details").toString()), "Login failed!");
+    		qDebug() << "XXXX App::User authentication failed! - " << messType.value("details").toString();
+    		return false;
+    	}
 
-	//check if there was a server error
-	else{
-		alert(tr("%1").arg(serverResponse.responseMessage), "Login failed!");
-		qDebug() << "XXXX App::User authentication failed! - " << serverResponse.responseMessage;
+    	//check if there was a server error
+    	else{
+    		alert(tr("%1").arg(serverResponse.responseMessage), "Login failed!");
+    		qDebug() << "XXXX App::User authentication failed! - " << serverResponse.responseMessage;
+    		return false;
+    	}
+    }
+    else{
+		alert(tr("%1").arg("Could not interpret server response"), "Login failed!");
+		qDebug() << "XXXX App::Could not interpret server response";
 		return false;
-	}
+    }
+
+
 }
 
 void App::handleTransaction()

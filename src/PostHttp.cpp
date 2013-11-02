@@ -132,6 +132,7 @@ void PostHttp::onGetReply()
                 //}
                 jsonreply = jsonva.toMap();
                 qDebug() << "XXXX PostHttp::onGetReply - Server response: \n" << data;
+                //qDebug() << "XXXX PostHttp::onGetReply - Server response: \n" << jsonva.toString();
                 //response+= jsonva.toString();
                 response += data;
             }

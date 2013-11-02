@@ -22,8 +22,8 @@ static const uint qt_meta_data_App[] = {
        6,       // revision
        0,       // classname
        0,    0, // classinfo
-      11,   14, // methods
-       1,   69, // properties
+      12,   14, // methods
+       1,   74, // properties
        0,    0, // enums/sets
        0,    0, // constructors
        0,       // flags
@@ -42,10 +42,11 @@ static const uint qt_meta_data_App[] = {
      238,  215,  147,    4, 0x02,
      280,  276,  147,    4, 0x02,
      320,  302,  147,    4, 0x02,
-     354,    4,    4,    4, 0x02,
+     354,    4,  147,    4, 0x02,
+     374,    4,    4,    4, 0x02,
 
  // properties: name, type, flags
-     399,  374, 0x00095409,
+     419,  394, 0x00095409,
 
        0        // eod
 };
@@ -61,8 +62,8 @@ static const char qt_meta_stringdata_App[] = {
     "updateRecord(QString,QString,QString)\0"
     "key\0deleteRecord(QString)\0username,password\0"
     "authenticateUser(QString,QString)\0"
-    "handleTransaction()\0bb::cascades::DataModel*\0"
-    "dataModel\0"
+    "createUserProfile()\0handleTransaction()\0"
+    "bb::cascades::DataModel*\0dataModel\0"
 };
 
 void App::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, void **_a)
@@ -85,7 +86,9 @@ void App::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, void **
             if (_a[0]) *reinterpret_cast< bool*>(_a[0]) = _r; }  break;
         case 9: { bool _r = _t->authenticateUser((*reinterpret_cast< const QString(*)>(_a[1])),(*reinterpret_cast< const QString(*)>(_a[2])));
             if (_a[0]) *reinterpret_cast< bool*>(_a[0]) = _r; }  break;
-        case 10: _t->handleTransaction(); break;
+        case 10: { bool _r = _t->createUserProfile();
+            if (_a[0]) *reinterpret_cast< bool*>(_a[0]) = _r; }  break;
+        case 11: _t->handleTransaction(); break;
         default: ;
         }
     }
@@ -123,9 +126,9 @@ int App::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
-        if (_id < 11)
+        if (_id < 12)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 11;
+        _id -= 12;
     }
 #ifndef QT_NO_PROPERTIES
       else if (_c == QMetaObject::ReadProperty) {

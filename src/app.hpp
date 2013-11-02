@@ -44,6 +44,8 @@ extern QVariant parse(const QString &json);
 	typedef enum{
 		SERVER_OUT_CODE_INVALID = -1,
 		SERVER_OUT_CODE_LOGIN_REQ = 0,
+		SERVER_OUT_CODE_SIGN_UP_REQ = 1,
+		SERVER_OUT_CODE_GET_USER_PROFILE = 2,
 	    //all new codes should be placed above this line
 	    SERVER_OUT_CODE_MAX
 	}paymentServerOutgoingCodeType;
@@ -53,10 +55,49 @@ extern QVariant parse(const QString &json);
 		SERVER_IN_CODE_INVALID = -1,
 		SERVER_IN_CODE_LOGIN_SUCCESS = 0,
 		SERVER_IN_CODE_LOGIN_FAILURE = 1,
+	    SERVER_IN_CODE_SIGN_UP_SUCCESS = 2,
+	    SERVER_IN_SIGN_UP_FAILURE = 3,
+	    SERVER_IN_SEND_USER_PROFILE_SUCCESS = 4,
+	    SERVER_IN_SEND_USER_PROFILE_FAILURE = 5,
 		//all new codes should be placed above this line
 		SERVER_IN_CODE_MAX
 	}paymentServerIncomingCodeType;
 
+	//Structure of user profile data stored on the payment server
+	typedef struct paymentServerUserProfileType {
+	    int userNo;
+	    QString email;
+	    QString username;
+	    QString password;             //base64-encoded
+	    QString userType;
+	    QString firstName;
+	    QString middleName;
+	    QString lastName;
+	    int DOBDay;
+	    int DOBMonth;
+	    int DOBYear;
+	    QString occupation;
+	    int SIN;
+	    QString address1;
+	    QString address2;
+	    QString city;
+	    QString province;
+	    QString country;
+	    QString postalCode;
+	    int phoneNumber;
+	    bool receiveCommunication;
+	    QString bankCode;             //base64-encoded
+	    QString accountNum;           //base64-encoded
+	    QString accountPWD;      //base64-encoded
+	    double acctBalance;          //base64-encoded
+	    QString transactionHistory;
+	    int POSHWID;
+	    QString currentDK;            //base64-encoded
+	    QString nextDK;               //base64-encoded
+	    QString authenticationString;  //base64-encoded
+	    QString createTime;
+	}paymentServerUserProfileType;
+	extern paymentServerUserProfileType userProfile;
 
 /*
  * @brief Declaration of our application's class (as opposed to the BB Cascades
@@ -80,6 +121,7 @@ public:
     Q_INVOKABLE bool updateRecord(const QString &key, const QString &firstName, const QString &lastName);
     Q_INVOKABLE bool deleteRecord(const QString &key);
     Q_INVOKABLE bool authenticateUser(const QString &username, const QString &password);
+    Q_INVOKABLE bool createUserProfile();
     Q_INVOKABLE void handleTransaction();
     QString JSONMapToString(QMap<QString, QVariant> map);
 //    Q_INVOKABLE void showMessage(const QString &text, const QString &field);
