@@ -20,9 +20,11 @@
 #include <bb/cascades/ActivityIndicator>
 #include <bb/cascades/AbstractPane>
 #include <bb/cascades/AbstractTextControl>
+#include <bb/cascades/TextField>
 #include <bb/cascades/AbstractToggleButton>
 #include <bb/cascades/ActiveTextHandler>
 #include <bb/cascades/Application>
+#include <bb/utility/StringValidator>
 #include <bb/system/SystemDialog>
 #include <bb/cascades/OrientationSupport>
 #include <bb/cascades/DropDown>
@@ -49,6 +51,8 @@
 using namespace bb::cascades;
 using namespace bb::system;
 using namespace bb::data;
+using namespace bb::utility;
+
 using namespace QtJson;
 
 QmlDocument *transactionQml;
@@ -58,6 +62,7 @@ AbstractPane *root;
 bool activeTransaction;
 QMap<QString, QVariant> jsonMessage;
 paymentServerUserProfileType userProfile;
+
 
 static QString assetPath(const QString& assetName)
 {
@@ -74,6 +79,7 @@ App::App()
 
 
 	qmlRegisterType<LoginDialog>("Dialog.Login", 1, 0, "LoginDialog");
+	qmlRegisterType<StringValidator>("my.Validator", 1, 0, "StringValidator");
 
     // Create a QMLDocument from the definition in main.qml
     rootQml = QmlDocument::create("asset:///main.qml");
@@ -99,7 +105,6 @@ App::App()
 	_nfcManager = NfcManager::getInstance();
 	_nfcManager->_workerInstance->appObject = this;
 	_nfcManager->startEventProcessing();
-
 	loadJsonMessageStructure();
 }
 //! [0]
@@ -460,41 +465,18 @@ void App::alert(const QString &message, const QString &title)
     dialog->show();
 }
 
+/*
+ *
+ *Create new user profile
+ */
 bool App::createUserProfile()
 {
 	qDebug() << "XXXX App::createUserProfile entered";
-	AbstractTextControl *textControl;
-
-	//Retrieve all form data an store in a userProfile structure
-	userProfile.email = root->findChild<AbstractTextControl*>("email")->text();
-	QString username = root->findChild<AbstractTextControl*>("username")->text();
-	QString password = root->findChild<AbstractTextControl*>("password")->text();
-	userProfile.password = root->findChild<AbstractTextControl*>("passwordConfirm")->text();
-	userProfile.POSHWID = root->findChild<AbstractTextControl*>("poshwid")->text().toInt();
-	userProfile.firstName = root->findChild<AbstractTextControl*>("firstName")->text();
-	userProfile.middleName = root->findChild<AbstractTextControl*>("middleName")->text();
-	userProfile.lastName = root->findChild<AbstractTextControl*>("lastName")->text();
-	userProfile.DOBDay = root->findChild<AbstractTextControl*>("dobDate")->text().toInt();
-	userProfile.DOBMonth = root->findChild<AbstractTextControl*>("dobMonth")->text().toInt();
-	userProfile.DOBYear = root->findChild<AbstractTextControl*>("dobYear")->text().toInt();
-	userProfile.occupation = root->findChild<AbstractTextControl*>("occupation")->text();
-	userProfile.SIN = root->findChild<AbstractTextControl*>("sin")->text().toInt();
-	userProfile.address1 = root->findChild<AbstractTextControl*>("address1")->text();
-	userProfile.address2 = root->findChild<AbstractTextControl*>("address2")->text();
-	userProfile.city = root->findChild<AbstractTextControl*>("city")->text();
-	userProfile.province = root->findChild<AbstractTextControl*>("province")->text();
-	userProfile.country = root->findChild<AbstractTextControl*>("country")->text();
-	userProfile.postalCode = root->findChild<AbstractTextControl*>("postalCode")->text();
-	userProfile.phoneNumber = root->findChild<AbstractTextControl*>("phoneNumber")->text().toInt();
-	userProfile.bankCode = root->findChild<AbstractTextControl*>("bankCode")->text();
-	userProfile.accountNum = root->findChild<AbstractTextControl*>("accountNum")->text();
-	userProfile.accountPWD = root->findChild<AbstractTextControl*>("accountPWD")->text();
-	userProfile.userType = root->findChild<DropDown*>("userTypeDrop")->selectedValue().toString();
-	userProfile.receiveCommunication = root->findChild<AbstractToggleButton*>("contactCheck")->isChecked();
+	storeFormData();
 
     //Base64-encode login credentials before sending to server
-	userProfile.username  = QString::fromUtf8(username.toUtf8().toBase64());
-	userProfile.password  = QString::fromUtf8(password.toUtf8().toBase64());
+	userProfile.username  = QString::fromUtf8(userProfile.username.toUtf8().toBase64());
+	userProfile.password  = QString::fromUtf8(userProfile.password.toUtf8().toBase64());
 
     //load message structure and build outgoing message
     loadJsonMessageStructure();
@@ -589,33 +571,7 @@ bool App::createUserProfile()
 	if (it != serverResponse.dataMap.end()) {
 		QMap<QString, QVariant> messType = it.value().toMap();
 		if(messType.value("code").toInt() == SERVER_IN_CODE_SIGN_UP_SUCCESS){
-			//Clear all form entries
-			root->findChild<AbstractTextControl*>("email")->setText("");
-			root->findChild<AbstractTextControl*>("username")->setText("");
-			root->findChild<AbstractTextControl*>("password")->setText("");
-			root->findChild<AbstractTextControl*>("passwordConfirm")->setText("");
-			root->findChild<AbstractTextControl*>("poshwid")->setText("");
-			root->findChild<AbstractTextControl*>("firstName")->setText("");;
-			root->findChild<AbstractTextControl*>("middleName")->setText("");;
-			root->findChild<AbstractTextControl*>("lastName")->setText("");
-			root->findChild<AbstractTextControl*>("dobDate")->setText("");
-			root->findChild<AbstractTextControl*>("dobMonth")->setText("");
-			root->findChild<AbstractTextControl*>("dobYear")->setText("");
-			root->findChild<AbstractTextControl*>("occupation")->setText("");
-			root->findChild<AbstractTextControl*>("sin")->setText("");
-			root->findChild<AbstractTextControl*>("address1")->setText("");
-			root->findChild<AbstractTextControl*>("address2")->setText("");
-			root->findChild<AbstractTextControl*>("city")->setText("");
-			root->findChild<AbstractTextControl*>("province")->setText("");
-			root->findChild<AbstractTextControl*>("country")->setText("");
-			root->findChild<AbstractTextControl*>("postalCode")->setText("");
-			root->findChild<AbstractTextControl*>("phoneNumber")->setText("");
-			root->findChild<AbstractTextControl*>("bankCode")->setText("");
-			root->findChild<AbstractTextControl*>("accountNum")->setText("");
-			root->findChild<AbstractTextControl*>("accountPWD")->setText("");
-			root->findChild<DropDown*>("userTypeDrop")->setSelectedOption(0);
-			root->findChild<AbstractToggleButton*>("contactCheck")->resetChecked();
-
+			clearFormData();//Clear all form entries
 			transactionQml = QmlDocument::create("asset:///transaction.qml");
 			transactionQml->setContextProperty("_app", this);
 			transaction = transactionQml->createRootObject<AbstractPane>();
@@ -815,3 +771,68 @@ QString App::JSONMapToString(QMap<QString, QVariant> map)
 	ja.saveToBuffer(temp, &out);
 	return out;
 }
+
+bool App::validateEmail(QString email)
+{
+	bb::utility::StringValidator _stringValidator;
+	if (_stringValidator.isEmailAddress(email)){
+		return true;
+	}
+	return false;
+}
+
+void App::storeFormData(){
+	userProfile.email = root->findChild<AbstractTextControl*>("email")->text();
+	userProfile.username = root->findChild<AbstractTextControl*>("username")->text();
+	userProfile.password = root->findChild<AbstractTextControl*>("password")->text();
+	userProfile.password = root->findChild<AbstractTextControl*>("passwordConfirm")->text();
+	userProfile.POSHWID = root->findChild<AbstractTextControl*>("poshwid")->text().toInt();
+	userProfile.firstName = root->findChild<AbstractTextControl*>("firstName")->text();
+	userProfile.middleName = root->findChild<AbstractTextControl*>("middleName")->text();
+	userProfile.lastName = root->findChild<AbstractTextControl*>("lastName")->text();
+	userProfile.DOBDay = root->findChild<AbstractTextControl*>("dobDate")->text().toInt();
+	userProfile.DOBMonth = root->findChild<AbstractTextControl*>("dobMonth")->text().toInt();
+	userProfile.DOBYear = root->findChild<AbstractTextControl*>("dobYear")->text().toInt();
+	userProfile.occupation = root->findChild<AbstractTextControl*>("occupation")->text();
+	userProfile.SIN = root->findChild<AbstractTextControl*>("sin")->text().toInt();
+	userProfile.address1 = root->findChild<AbstractTextControl*>("address1")->text();
+	userProfile.address2 = root->findChild<AbstractTextControl*>("address2")->text();
+	userProfile.city = root->findChild<AbstractTextControl*>("city")->text();
+	userProfile.province = root->findChild<AbstractTextControl*>("province")->text();
+	userProfile.country = root->findChild<AbstractTextControl*>("country")->text();
+	userProfile.postalCode = root->findChild<AbstractTextControl*>("postalCode")->text();
+	userProfile.phoneNumber = root->findChild<AbstractTextControl*>("phoneNumber")->text().toInt();
+	userProfile.bankCode = root->findChild<AbstractTextControl*>("bankCode")->text();
+	userProfile.accountNum = root->findChild<AbstractTextControl*>("accountNum")->text();
+	userProfile.accountPWD = root->findChild<AbstractTextControl*>("accountPWD")->text();
+	userProfile.receiveCommunication = root->findChild<AbstractToggleButton*>("contactCheck")->isChecked();
+}
+
+void App::clearFormData(){
+	root->findChild<AbstractTextControl*>("email")->setText("");
+	root->findChild<AbstractTextControl*>("username")->setText("");
+	root->findChild<AbstractTextControl*>("password")->setText("");
+	root->findChild<AbstractTextControl*>("passwordConfirm")->setText("");
+	root->findChild<AbstractTextControl*>("poshwid")->setText("");
+	root->findChild<AbstractTextControl*>("firstName")->setText("");;
+	root->findChild<AbstractTextControl*>("middleName")->setText("");;
+	root->findChild<AbstractTextControl*>("lastName")->setText("");
+	root->findChild<AbstractTextControl*>("dobDate")->setText("");
+	root->findChild<AbstractTextControl*>("dobMonth")->setText("");
+	root->findChild<AbstractTextControl*>("dobYear")->setText("");
+	root->findChild<AbstractTextControl*>("occupation")->setText("");
+	root->findChild<AbstractTextControl*>("sin")->setText("");
+	root->findChild<AbstractTextControl*>("address1")->setText("");
+	root->findChild<AbstractTextControl*>("address2")->setText("");
+	root->findChild<AbstractTextControl*>("city")->setText("");
+	root->findChild<AbstractTextControl*>("province")->setText("");
+	root->findChild<AbstractTextControl*>("country")->setText("");
+	root->findChild<AbstractTextControl*>("postalCode")->setText("");
+	root->findChild<AbstractTextControl*>("phoneNumber")->setText("");
+	root->findChild<AbstractTextControl*>("bankCode")->setText("");
+	root->findChild<AbstractTextControl*>("accountNum")->setText("");
+	root->findChild<AbstractTextControl*>("accountPWD")->setText("");
+	root->findChild<DropDown*>("userTypeDrop")->setSelectedOption(0);
+	root->findChild<AbstractToggleButton*>("contactCheck")->resetChecked();
+}
+

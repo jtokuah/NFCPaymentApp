@@ -19,6 +19,7 @@
 #include <bb/cascades/QmlDocument>
 #include <bb/data/SqlConnection>
 #include <bb/cascades/GroupDataModel>
+#include <bb/utility/StringValidator>
 #include "NfcManager.hpp"
 #include "QtObjectFormatter.hpp"
 #include "HttpSampleApp.hpp"
@@ -31,6 +32,7 @@
 #include <QtCore>
 
 using namespace bb::cascades;
+using namespace bb::utility;
 using namespace QtJson;
 
 extern QmlDocument *transactionQml;
@@ -123,6 +125,7 @@ public:
     Q_INVOKABLE bool authenticateUser(const QString &username, const QString &password);
     Q_INVOKABLE bool createUserProfile();
     Q_INVOKABLE void handleTransaction();
+    Q_INVOKABLE bool validateEmail(QString email);
     QString JSONMapToString(QMap<QString, QVariant> map);
 //    Q_INVOKABLE void showMessage(const QString &text, const QString &field);
 //    Q_INVOKABLE void activityIndicator(const QString &command);
@@ -139,6 +142,8 @@ private:
     void initDataModel();
     bool initDatabase();
     void loadJsonMessageStructure();
+    void storeFormData();
+    void clearFormData();
 
     NfcManager* _nfcManager;
     HttpSampleApp* _httpSampleApp;
@@ -151,7 +156,6 @@ private:
 
     // The data shown by the list view.
     GroupDataModel* m_dataModel;
-
 };
 
 #endif

@@ -4,90 +4,90 @@
 <context>
     <name>App</name>
     <message>
-        <location filename="../src/app.cpp" line="129"/>
+        <location filename="../src/app.cpp" line="134"/>
         <source>Error opening connection to the database: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/app.cpp" line="144"/>
+        <location filename="../src/app.cpp" line="149"/>
         <source>Drop table error: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/app.cpp" line="157"/>
+        <location filename="../src/app.cpp" line="162"/>
         <source>Create table error: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/app.cpp" line="176"/>
+        <location filename="../src/app.cpp" line="181"/>
         <source>You must provide a first or last name.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/app.cpp" line="214"/>
+        <location filename="../src/app.cpp" line="219"/>
         <source>Create record succeeded.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/app.cpp" line="220"/>
+        <location filename="../src/app.cpp" line="225"/>
         <source>Create record error: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/app.cpp" line="246"/>
-        <location filename="../src/app.cpp" line="318"/>
+        <location filename="../src/app.cpp" line="251"/>
+        <location filename="../src/app.cpp" line="323"/>
         <source>You must provide valid integer key.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/app.cpp" line="286"/>
+        <location filename="../src/app.cpp" line="291"/>
         <source>Customer with id=%1 was updated.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/app.cpp" line="289"/>
-        <location filename="../src/app.cpp" line="353"/>
+        <location filename="../src/app.cpp" line="294"/>
+        <location filename="../src/app.cpp" line="358"/>
         <source>Customer with id=%1 was not found.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/app.cpp" line="292"/>
-        <location filename="../src/app.cpp" line="356"/>
+        <location filename="../src/app.cpp" line="297"/>
+        <location filename="../src/app.cpp" line="361"/>
         <source>SQL error: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/app.cpp" line="350"/>
+        <location filename="../src/app.cpp" line="355"/>
         <source>Customer with id=%1 was deleted.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/app.cpp" line="428"/>
+        <location filename="../src/app.cpp" line="433"/>
         <source>The customer table is empty.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/app.cpp" line="431"/>
+        <location filename="../src/app.cpp" line="436"/>
         <source>Read records failed: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/app.cpp" line="452"/>
+        <location filename="../src/app.cpp" line="457"/>
         <source>OK</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/app.cpp" line="652"/>
+        <location filename="../src/app.cpp" line="608"/>
         <source>You must provide valid username and password to login</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/app.cpp" line="628"/>
-        <location filename="../src/app.cpp" line="635"/>
-        <location filename="../src/app.cpp" line="642"/>
-        <location filename="../src/app.cpp" line="705"/>
-        <location filename="../src/app.cpp" line="712"/>
-        <location filename="../src/app.cpp" line="718"/>
+        <location filename="../src/app.cpp" line="584"/>
+        <location filename="../src/app.cpp" line="591"/>
+        <location filename="../src/app.cpp" line="598"/>
+        <location filename="../src/app.cpp" line="661"/>
+        <location filename="../src/app.cpp" line="668"/>
+        <location filename="../src/app.cpp" line="674"/>
         <source>%1</source>
         <translation type="unfinished"></translation>
     </message>
@@ -183,17 +183,22 @@
 <context>
     <name>main</name>
     <message>
-        <location filename="../assets/main.qml" line="28"/>
-        <location filename="../assets/main.qml" line="451"/>
+        <location filename="../assets/main.qml" line="29"/>
+        <location filename="../assets/main.qml" line="581"/>
         <source>NFC Payment App | Welcome</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/main.qml" line="357"/>
-        <location filename="../assets/main.qml" line="402"/>
-        <location filename="../assets/main.qml" line="526"/>
-        <location filename="../assets/main.qml" line="586"/>
+        <location filename="../assets/main.qml" line="479"/>
+        <location filename="../assets/main.qml" line="530"/>
+        <location filename="../assets/main.qml" line="656"/>
+        <location filename="../assets/main.qml" line="721"/>
         <source>NFC Payment App | Sign up</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../assets/main.qml" line="709"/>
+        <source>NFC Payment App | Login</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
