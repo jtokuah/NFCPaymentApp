@@ -595,8 +595,8 @@ bool App::createUserProfile()
 
 	}
     else{
-		alert(tr("%1").arg("Could not interpret server response"), "Login failed!");
-		qDebug() << "XXXX App::Could not interpret server response";
+		alert(tr("%1").arg(serverResponse.responseMessage), "Login error!");
+		qDebug() << "XXXX App::Login error - "<< serverResponse.responseMessage;
 		return false;
     }
 
@@ -671,8 +671,8 @@ bool App::authenticateUser(const QString &uname, const QString &pwd)
     	}
     }
     else{
-		alert(tr("%1").arg("Could not interpret server response"), "Login failed!");
-		qDebug() << "XXXX App::Could not interpret server response";
+		alert(tr("%1").arg(serverResponse.responseMessage), "Login error!");
+		qDebug() << "XXXX App::Login error - " << serverResponse.responseMessage;
 		return false;
     }
 

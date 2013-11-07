@@ -95,16 +95,19 @@
 <context>
     <name>CreatePage</name>
     <message>
+        <location filename="../assets/720x720/CreatePage.qml" line="33"/>
         <location filename="../assets/CreatePage.qml" line="33"/>
         <source>First Name</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../assets/720x720/CreatePage.qml" line="40"/>
         <location filename="../assets/CreatePage.qml" line="40"/>
         <source>Last Name</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../assets/720x720/CreatePage.qml" line="46"/>
         <location filename="../assets/CreatePage.qml" line="46"/>
         <source>Create</source>
         <translation type="unfinished"></translation>
@@ -113,11 +116,13 @@
 <context>
     <name>DeletePage</name>
     <message>
+        <location filename="../assets/720x720/DeletePage.qml" line="33"/>
         <location filename="../assets/DeletePage.qml" line="33"/>
         <source>Key of record to delete</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../assets/720x720/DeletePage.qml" line="39"/>
         <location filename="../assets/DeletePage.qml" line="39"/>
         <source>Delete</source>
         <translation type="unfinished"></translation>
@@ -126,8 +131,17 @@
 <context>
     <name>ErrorPage</name>
     <message>
+        <location filename="../assets/720x720/ErrorPage.qml" line="28"/>
         <location filename="../assets/ErrorPage.qml" line="28"/>
         <source>ERROR: Database Initialization Failed</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>PageBase</name>
+    <message>
+        <location filename="../assets/720x720/PageBase.qml" line="25"/>
+        <source>Database CRUD Sample</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -158,23 +172,45 @@
     </message>
 </context>
 <context>
+    <name>RetrievePage</name>
+    <message>
+        <location filename="../assets/720x720/RetrievePage.qml" line="31"/>
+        <source>%1 %2</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../assets/720x720/RetrievePage.qml" line="32"/>
+        <source>Unique Key: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../assets/720x720/RetrievePage.qml" line="41"/>
+        <source>Retrieve</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>UpdatePage</name>
     <message>
+        <location filename="../assets/720x720/UpdatePage.qml" line="33"/>
         <location filename="../assets/UpdatePage.qml" line="33"/>
         <source>New first name</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../assets/720x720/UpdatePage.qml" line="40"/>
         <location filename="../assets/UpdatePage.qml" line="40"/>
         <source>New last name</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../assets/720x720/UpdatePage.qml" line="47"/>
         <location filename="../assets/UpdatePage.qml" line="47"/>
         <source>Key of record to update</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../assets/720x720/UpdatePage.qml" line="53"/>
         <location filename="../assets/UpdatePage.qml" line="53"/>
         <source>Update</source>
         <translation type="unfinished"></translation>
@@ -183,21 +219,42 @@
 <context>
     <name>main</name>
     <message>
-        <location filename="../assets/main.qml" line="29"/>
-        <location filename="../assets/main.qml" line="581"/>
+        <location filename="../assets/720x720/main.qml" line="30"/>
+        <source>Create</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../assets/720x720/main.qml" line="40"/>
+        <source>Retrieve</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../assets/720x720/main.qml" line="50"/>
+        <source>Update</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../assets/720x720/main.qml" line="60"/>
+        <source>Delete</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../assets/main.qml" line="28"/>
+        <location filename="../assets/main.qml" line="658"/>
+        <location filename="../assets/main.qml" line="794"/>
         <source>NFC Payment App | Welcome</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/main.qml" line="479"/>
-        <location filename="../assets/main.qml" line="530"/>
-        <location filename="../assets/main.qml" line="656"/>
-        <location filename="../assets/main.qml" line="721"/>
+        <location filename="../assets/main.qml" line="557"/>
+        <location filename="../assets/main.qml" line="603"/>
+        <location filename="../assets/main.qml" line="733"/>
+        <location filename="../assets/main.qml" line="803"/>
         <source>NFC Payment App | Sign up</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/main.qml" line="709"/>
+        <location filename="../assets/main.qml" line="786"/>
         <source>NFC Payment App | Login</source>
         <translation type="unfinished"></translation>
     </message>

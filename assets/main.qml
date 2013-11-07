@@ -15,7 +15,6 @@
 
 import bb.cascades 1.0
 import Dialog.Login 1.0
-import my.Validator 1.0
 
 // The root node has to inherit from AbstractPane -- in this case a Page.
 // There is always only ONE root not in a QML file and it is typically
@@ -70,7 +69,7 @@ Page {
                         id: userTypeDrop
                         objectName: "userTypeDrop"
                         onSelectedOptionChanged: {
-                            errorDrop.visible = false
+                            errorDrop.visible = false;
                             errorLabel.visible = false;
                         }
                         Option {
@@ -99,15 +98,16 @@ Page {
                         id: emailValidator
                         objectName: "emailValidator"
                         mode: ValidationMode.Immediate
-                        errorMessage: "You must provide a valid email"
-                        
+                        errorMessage: "You must provide a valid email"                    
                         onValidate: {
                             if (_app.validateEmail(email.text)){
                                 state = ValidationState.Valid; 
                                 errorLabel.visible = false;     
                             }                              
-                            else
+                            else{
                                 state = ValidationState.Invalid
+                                errorLabel.visible = true;     
+                            }
                         }
                     }
                 }
@@ -120,70 +120,109 @@ Page {
                     visible: false
                     validator: Validator {
                         mode: ValidationMode.Immediate
-                        errorMessage: "You must choose a username"
-                        
+                        errorMessage: "You must choose a username"                      
                         onValidate: {
-                            if (email.text.length >0){
+                            if (email.text.length > 0){
                                 state = ValidationState.Valid;
                                 errorLabel.visible = false;
                             }  
-                            else
+                            else{
                                 state = ValidationState.Invalid
+                                errorLabel.visible = true;
+                            }
                         }
                     }
                 }
-                
-                TextField {
-                    maxWidth: 500
-                    id: password
-                    objectName: "password"
-                    inputMode: TextFieldInputMode.Password
-                    hintText: "Choose a password*"
-                    visible: false
-                    validator: Validator {
-                        mode: ValidationMode.Immediate
-                        errorMessage: "You must choose a password"                    
-                        onValidate: {
-                            if (password.text.length >0){
-                                if (password.text.length >= 6){
-                                    state = ValidationState.Valid;
-                                    errorLabel.visible = false; 
-                                } 
-                                else {
-                                    errorMessage = "Password must be at least characters long";
-                                    state = ValidationState.Invalid;
+                Container {
+                    layout: StackLayout {
+                        orientation: LayoutOrientation.LeftToRight
+                    }
+                    TextField {
+                        maxWidth: 500
+                        id: password
+                        objectName: "password"
+                        inputMode: TextFieldInputMode.Password
+                        hintText: "Choose a password*"
+                        visible: false
+                        validator: Validator {
+                            mode: ValidationMode.Immediate
+                            errorMessage: "You must choose a password"                    
+                            onValidate: {
+                                if (password.text.length >0){
+                                    if (password.text.length > 0/*>= 6*/){
+                                        state = ValidationState.Valid;
+                                        errorLabel.visible = false; 
+                                    } 
+                                    else {
+                                        errorMessage = "Password must be at least characters long";
+                                        state = ValidationState.Invalid;
+                                        errorLabel.visible = true;
+                                        errorPass.visible = true;
+                                    }
+                                }
+                                else{
+                                    state = ValidationState.Invalid
+                                    errorLabel.visible = true;
+                                    errorPass.visible = true;
                                 }
                             }
-                            else
-                                state = ValidationState.Invalid;
                         }
                     }
+                    Container{
+                        topPadding: 12
+                        Label { 
+                            id: errorPass
+                            objectName: "errorPass"
+                            textStyle.color: Color.Red
+                            text:  "!"
+                            visible: false
+                        }
+                    }                   
                 }
-                TextField {
-                    maxWidth: 500
-                    id: passwordConfirm
-                    objectName: "passwordConfirm"
-                    inputMode: TextFieldInputMode.Password
-                    hintText: "Re-enter password*"
-                    visible: false
-                    validator: Validator {
-                        mode: ValidationMode.Immediate
-                        errorMessage: "Passwords do not match"                       
-                        onValidate: {
-                            if (passwordConfirm.text == password.text){
-                                state = ValidationState.Valid;
-                                errorLabel.visible = false;  
+                Container {
+                    topPadding: 20
+                    layout: StackLayout {
+                        orientation: LayoutOrientation.LeftToRight
+                    }
+                    TextField {
+                        maxWidth: 500
+                        id: passwordConfirm
+                        objectName: "passwordConfirm"
+                        inputMode: TextFieldInputMode.Password
+                        hintText: "Re-enter password*"
+                        visible: false
+                        validator: Validator {
+                            mode: ValidationMode.Immediate
+                            errorMessage: "Passwords do not match"                       
+                            onValidate: {
+                                if (passwordConfirm.text != "" && passwordConfirm.text == password.text){
+                                    state = ValidationState.Valid;
+                                    errorLabel.visible = false;  
+                                    errorConfPass.visible = false;
+                                }
+                                else{
+                                    state = ValidationState.Invalid;
+                                    errorLabel.visible = true;
+                                    errorConfPass.visible = true;
+                                }
                             }
-                            else
-                                state = ValidationState.Invalid;
                         }
                     }
+                    Container{
+                        topPadding: 12
+                        Label { 
+                            id: errorConfPass
+                            objectName: "errorConfPass"
+                            textStyle.color: Color.Red
+                            text:  "!"
+                            visible: false
+                        }
+                    } 
                 }
                 TextField {
                     maxWidth: 600
                     id: poshwid
                     objectName: "poshwid"
-                    inputMode: TextFieldInputMode.Password
                     hintText: "Hardware ID (Merchant only)"
                     visible: false
                     validator: Validator {
@@ -191,8 +230,10 @@ Page {
                         errorMessage: "You must provide a 'Hardware ID'"                       
                         onValidate: {
                             if (userTypeDrop.selectedValue == "M"){
-                                if (poshwid.text.length == 0)
-                                    state = ValidationState.Invalid;
+                                if (poshwid.text.length == 0){
+                                    state = ValidationState.Invalid
+                                    errorLabel.visible = true;
+                                }
                                 else {
                                     state = ValidationState.Valid;
                                     errorLabel.visible = false;  
@@ -225,8 +266,10 @@ Page {
                                 state = ValidationState.Valid;
                                 errorLabel.visible = false;  
                             }
-                            else
+                            else{
                                 state = ValidationState.Invalid
+                                errorLabel.visible = true;
+                            }
                         }
                     }
                 }
@@ -249,8 +292,10 @@ Page {
                                 state = ValidationState.Valid;
                                 errorLabel.visible = false;  
                             }
-                            else
+                            else{
                                 state = ValidationState.Invalid
+                                errorLabel.visible = true;
+                            }
                         }
                     }
                 }
@@ -260,7 +305,6 @@ Page {
                     text: "Date of birth*:"
                     visible: false
                     opacity: 0.4
-                    rightPadding: 30
                 }
 
                 Container {
@@ -377,8 +421,10 @@ Page {
                                 state = ValidationState.Valid;
                                 errorLabel.visible = false;  
                             }
-                            else
+                            else{
                                 state = ValidationState.Invalid
+                                errorLabel.visible = true;
+                            }
                         }
                     }
                 }
@@ -395,30 +441,53 @@ Page {
                                 state = ValidationState.Valid;
                                 errorLabel.visible = false;  
                             }
-                            else
+                            else{
                                 state = ValidationState.Invalid
+                                errorLabel.visible = true;
+                            }
                         }
                     }
                 }
-                TextField {
-                    maxWidth: 500
-                    id: accountPWD
-                    objectName: "accountPWD"
-                    inputMode: TextFieldInputMode.Password
-                    hintText: "Account password*"
-                    visible: false
-                    validator: Validator {
-                        mode: ValidationMode.Immediate
-                        errorMessage: "Enter your account password"                       
-                        onValidate: {
-                            if (accountPWD.text.length > 0){
-                                state = ValidationState.Valid;
+                Container {
+                    layout: StackLayout {
+                        orientation: LayoutOrientation.LeftToRight
+                    }
+                    TextField {
+                        maxWidth: 500
+                        id: accountPWD
+                        objectName: "accountPWD"
+                        inputMode: TextFieldInputMode.Password
+                        hintText: "Account password*"
+                        visible: false
+                        validator: Validator {
+                            mode: ValidationMode.Immediate
+                            errorMessage: "Enter your account password"                       
+                            onValidate: {
+                                if (accountPWD.text.length > 0){
+                                    state = ValidationState.Valid;
+                                    errorLabel.visible = false; 
+                                    errorAcctPWD.visible = false;
+                                }
+                                else{
+                                    state = ValidationState.Invalid
+                                    errorLabel.visible = true;
+                                    errorAcctPWD.visible = true;
+                                }
                             }
-                            else
-                                state = ValidationState.Invalid
                         }
                     }
-                }               
+                    Container{
+                        topPadding: 12
+                        Label { 
+                            id: errorAcctPWD
+                            objectName: "errorAcctPWD"
+                            textStyle.color: Color.Red
+                            text:  "!"
+                            visible: false
+                        }
+                    } 
+                }
+              
                 TextArea {
                     leftPadding: 40
                     rightPadding: 40
@@ -431,8 +500,6 @@ Page {
                     editable: false
                 }
                 CheckBox {
-                    leftPadding: 40
-                    rightPadding: 40
                     id: contactCheck
                     objectName: "contactCheck"
                     checked: false
@@ -446,7 +513,7 @@ Page {
                     objectName: "errorLabel"
                     textStyle.color: Color.Red
                     textStyle.fontSize: FontSize.Small
-                    text:  "The field(s) indicated above contain error"
+                    text: "The field(s) indicated above contain error"
                     visible: false
                 }
                 Container {
@@ -458,109 +525,116 @@ Page {
                         objectName: "submitButton"
                         visible: false
                         text: "Sign up"                                         
-                        onClicked: {
-                            if(userTypeDrop.selectedOptionSet == false){ 
+                        onClicked: {                            
+                            //Ensure form data is valid
+                            if(!userTypeDrop.selectedOptionSet){ 
                                 errorDrop.visible = true; 
                                 errorLabel.visible = true;
                             }
-                            
-                            //Ensure form data is valid
-                            email.validator.validationRequested = true; if (email.validator.valid == false) errorLabel.visible = true; 
-                            username.validator.validationRequested = true; if (username.validator.valid == false) errorLabel.visible = true;
-                            password.validator.validationRequested = true; if (password.validator.valid == false) errorLabel.visible = true;
-                            passwordConfirm.validator.validationRequested = true; if (passwordConfirm.validator.valid == false) errorLabel.visible = true;  
-                            poshwid.validator.validationRequested = true; if (poshwid.validator.valid == false) errorLabel.visible = true;        
-                            firstName.validator.validationRequested = true; if (firstName.validator.valid == false) errorLabel.visible = true;   
-                            lastName.validator.validationRequested = true; if (lastName.validator.valid == false) errorLabel.visible = true; 
-                            bankCode.validator.validationRequested = true; if (bankCode.validator.valid == false) errorLabel.visible = true;  
-                            accountNum.validator.validationRequested = true; if (accountNum.validator.valid == false) errorLabel.visible = true;         
-                            accountPWD.validator.validationRequested = true; if (accountPWD.validator.valid == false) errorLabel.visible = true;  
-                                                                                 
-                            titleBar.title = qsTr("NFC Payment App | Sign up")                            
-                            visible : false
-                            login.visible = false
-                            signUp.visible = false                             
-                            userTypeDrop.visible = false
-                            email.visible = false
-                            username.visible = false
-                            password.visible = false
-                            passwordConfirm.visible = false
-                            firstName.visible = false
-                            middleName.visible = false
-                            lastName.visible = false
-                            dobLabel.visible = false
-                            dobDate.visible = false
-                            dobMonth.visible = false
-                            dobYear.visible = false
-                            personalLabel.visible = false
-                            accountLabel.visible = false
-                            occupation.visible = false
-                            sin.visible = false
-                            contactLabel.visible = false
-                            address1.visible = false
-                            address2.visible = false
-                            city.visible = false
-                            province.visible = false
-                            postalCode.visible = false
-                            phoneNumber.visible = false
-                            contactCheck.visible = false
-                            contactAgreement.visible = false 
-                            cancelButton.visible = false
-                            submitButton.visible = false
-                            bankingLabel.visible = false
-                            bankCode.visible = false
-                            accountNum.visible = false
-                            accountPWD.visible = false
-                            poshwid.visible = false
-                            country.visible = false
-                                                      
+                            email.validator.requestValidation(); 
+                            if (!email.validator.valid && errorLabel.visible) errorLabel.visible = true;
+                            username.validator.requestValidation(); 
+                            if (username.validator.valid == false && errorLabel.visible == false) errorLabel.visible = true;
+                            password.validator.requestValidation(); 
+                            if (password.validator.valid == false && errorLabel.visible == false) errorLabel.visible = true;
+                            passwordConfirm.validator.requestValidation(); 
+                            if (passwordConfirm.validator.valid == false && errorLabel.visible == false) errorLabel.visible = true;  
+                            poshwid.validator.requestValidation(); 
+                            if (poshwid.validator.valid == false && errorLabel.visible == false) errorLabel.visible = true;        
+                            firstName.validator.requestValidation(); 
+                            if (firstName.validator.valid == false && errorLabel.visible == false) errorLabel.visible = true;   
+                            lastName.validator.requestValidation(); 
+                            if (lastName.validator.valid == false && errorLabel.visible == false) errorLabel.visible = true; 
+                            bankCode.validator.requestValidation(); 
+                            if (bankCode.validator.valid == false && errorLabel.visible == false) errorLabel.visible = true;  
+                            accountNum.validator.requestValidation(); 
+                            if (accountNum.validator.valid == false && errorLabel.visible == false) errorLabel.visible = true;         
+                            accountPWD.validator.requestValidation(); 
+                            if (accountPWD.validator.valid == false && errorLabel.visible == false) errorLabel.visible = true;                                                                                 
+                                                   
                             //Submit the form if all the fields are valid
-                            if (!(errorLabel.visible)&& !(errorDrop.visible)){
+                            if ((!errorLabel.visible) && (!errorDrop.visible)){
+                                titleBar.title = qsTr("NFC Payment App | Sign up")                            
+                                visible: false
+                                login.visible = false
+                                signUp.visible = false                             
+                                userTypeDrop.visible = false
+                                email.visible = false
+                                username.visible = false
+                                password.visible = false
+                                passwordConfirm.visible = false
+                                firstName.visible = false
+                                middleName.visible = false
+                                lastName.visible = false
+                                dobLabel.visible = false
+                                dobDate.visible = false
+                                dobMonth.visible = false
+                                dobYear.visible = false
+                                personalLabel.visible = false
+                                accountLabel.visible = false
+                                occupation.visible = false
+                                sin.visible = false
+                                contactLabel.visible = false
+                                address1.visible = false
+                                address2.visible = false
+                                city.visible = false
+                                province.visible = false
+                                postalCode.visible = false
+                                phoneNumber.visible = false
+                                contactCheck.visible = false
+                                contactAgreement.visible = false 
+                                cancelButton.visible = false
+                                submitButton.visible = false
+                                bankingLabel.visible = false
+                                bankCode.visible = false
+                                accountNum.visible = false
+                                accountPWD.visible = false
+                                poshwid.visible = false
+                                country.visible = false
                                 indicator.start()
                                 indicator.visible = true
+                                
                                 _app.createUserProfile();
                             }
-                            
-                            indicator.stop()
-                            indicator.visible = false
-                            
-                            visible : true
-                            login.visible = false
-                            signUp.visible = false
-                            titleBar.title = qsTr("NFC Payment App | Sign up")    
-                            userTypeDrop.visible = true
-                            email.visible = true
-                            username.visible = true
-                            password.visible = true
-                            passwordConfirm.visible = true
-                            firstName.visible = true
-                            middleName.visible = true
-                            lastName.visible = true
-                            dobLabel.visible = true
-                            dobDate.visible = true
-                            dobMonth.visible = true
-                            dobYear.visible = true
-                            personalLabel.visible = true
-                            accountLabel.visible = true
-                            occupation.visible = true
-                            sin.visible = true
-                            contactLabel.visible = true
-                            address1.visible = true
-                            address2.visible = true
-                            city.visible = true
-                            province.visible = true
-                            postalCode.visible = true
-                            phoneNumber.visible = true
-                            contactCheck.visible = true
-                            contactAgreement.visible = true 
-                            cancelButton.visible = true
-                            submitButton.visible = true
-                            bankingLabel.visible = true
-                            bankCode.visible = true
-                            accountNum.visible = true
-                            accountPWD.visible = true
-                            poshwid.visible = true
-                            country.visible = true
+                            else {                                
+                                visible: true
+                                login.visible = false
+                                signUp.visible = false
+                                titleBar.title = qsTr("NFC Payment App | Sign up")    
+                                userTypeDrop.visible = true
+                                email.visible = true
+                                username.visible = true
+                                password.visible = true
+                                passwordConfirm.visible = true
+                                firstName.visible = true
+                                middleName.visible = true
+                                lastName.visible = true
+                                dobLabel.visible = true
+                                dobDate.visible = true
+                                dobMonth.visible = true
+                                dobYear.visible = true
+                                personalLabel.visible = true
+                                accountLabel.visible = true
+                                occupation.visible = true
+                                sin.visible = true
+                                contactLabel.visible = true
+                                address1.visible = true
+                                address2.visible = true
+                                city.visible = true
+                                province.visible = true
+                                postalCode.visible = true
+                                phoneNumber.visible = true
+                                contactCheck.visible = true
+                                contactAgreement.visible = true 
+                                cancelButton.visible = true
+                                submitButton.visible = true
+                                bankingLabel.visible = true
+                                bankCode.visible = true
+                                accountNum.visible = true
+                                accountPWD.visible = true
+                                poshwid.visible = true
+                                country.visible = true
+                            }
                         }
                     }
                     
@@ -575,6 +649,9 @@ Page {
                         onClicked: {
                             errorDrop.visible = false
                             errorLabel.visible = false
+                            errorPass.visible = false
+                            errorConfPass.visible = false
+                            errorAcctPWD.visible = false
                             visible : false
                             login.visible = true
                             signUp.visible = true
@@ -709,8 +786,13 @@ Page {
                         titleBar.title = qsTr("NFC Payment App | Login")
                         indicator.start()
                         indicator.visible = true
-                        _app.authenticateUser(loginDialog.username, loginDialog.password);
-                        
+                        if (!_app.authenticateUser(loginDialog.username, loginDialog.password)){
+                            indicator.stop()
+                            indicator.visible = false
+                            login.visible = true
+                            signUp.visible = true
+                            titleBar.title = qsTr("NFC Payment App | Welcome")
+                        }                    
                     }
                     onCancel: {
                         loginDialogLabel.text = ""; 
